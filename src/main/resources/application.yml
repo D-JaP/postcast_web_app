@@ -1,0 +1,10 @@
+server:
+  error:
+    include-binding-errors: always
+    include-message: always
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/shopee_db
+    username: postgres
+    password: root
