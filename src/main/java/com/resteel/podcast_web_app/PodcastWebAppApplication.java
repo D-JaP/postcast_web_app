@@ -8,5 +8,4 @@ public class PodcastWebAppApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PodcastWebAppApplication.class, args);
 	}
-
 }
