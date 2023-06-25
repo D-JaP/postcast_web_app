@@ -3,10 +3,10 @@ DROP TABLE IF EXISTS podcast;
 
 CREATE TABLE podcast (
     id SERIAL PRIMARY KEY ,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at BIGINT NOT NULL DEFAULT (EXTRACT(EPOCH FROM current_timestamp)::bigint),
     cover_img_path TEXT,
-    title TEXT NOT NULL,
-    slug TEXT NOT NULL,
+    title TEXT UNIQUE NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
     author TEXT,
     directory TEXT NOT NULL,
     series_id INTEGER,

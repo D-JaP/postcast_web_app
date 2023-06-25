@@ -5,6 +5,6 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/shopee_db
+    url: jdbc:postgresql://localhost:5432/podcast
     username: postgres
     password: root
