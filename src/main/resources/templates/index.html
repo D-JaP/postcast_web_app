@@ -18,13 +18,14 @@
 <link rel="stylesheet" type="text/css" href="/css/style.css">
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.0/dist/css/glide.core.min.css">
-<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.0"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.core.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.theme.css">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
 <!--Owk carousel-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+
 </head>
 <body>
 
@@ -158,30 +159,64 @@
 			</span>
 		</div>
 
-		<div class="container_fluid carousel-container mt-2">		
-			<div class="owl-carousel owl-theme container d-flex align-items-center p-0 pt-5">
-				<div class="item">
-					<img src="../images/podcast/podcast.png" alt="" class="" style="width:300px;height:300px">
-					<div class="play-bt-hv">
-						<img src="../images/podcast/icon/play.svg" alt="" id="carousel-play-bt" class="carousel-play-bt" style="width:7rem">
-					</div>
-					<div class="item-title-bg carousel-podcast-title" id="carousel-podcast-id">
-						<p>#123. Title of the podcast</p>
-					</div>
-					<div class="blur-bg" style="">
-					</div>
+		<div class="container_fluid carousel-container mt-2">
+			<div class="glide">
+				<div class="glide__track " data-glide-el="track">
+					<ul class="glide__slides">
+						<li class="glide__slide">
+							<img src="../images/podcast/podcast.png" alt="" class="" style="width:300px;height:300px">
+							<div class="play-bt-hv">
+								<img src="../images/podcast/icon/play.svg" alt="" id="carousel-play-bt" class="carousel-play-bt" style="width:7rem">
+							</div>
+							<div class="item-title-bg carousel-podcast-title" id="carousel-podcast-id">
+								<p>#1. Title of the podcast</p>
+							</div>
+<!--							<div class="blur-bg" style="">-->
+<!--							</div>-->
+						</li>
+
+
+					</ul>
 				</div>
 
-
+				<div class="glide__arrows" data-glide-el="controls">
+					<button class="glide__arrow glide__arrow--left" data-glide-dir="<"></button>
+					<button class="glide__arrow glide__arrow--right" data-glide-dir=">"></button>
+				</div>
 			</div>
+<!--			<div class="owl-carousel owl-theme container d-flex align-items-center p-0 pt-5">-->
+<!--				<div class="item">-->
+<!--					<img src="../images/podcast/podcast.png" alt="" class="" style="width:300px;height:300px">-->
+<!--					<div class="play-bt-hv">-->
+<!--						<img src="../images/podcast/icon/play.svg" alt="" id="carousel-play-bt" class="carousel-play-bt" style="width:7rem">-->
+<!--					</div>-->
+<!--					<div class="item-title-bg carousel-podcast-title" id="carousel-podcast-id">-->
+<!--						<p>#123. Title of the podcast</p>-->
+<!--					</div>-->
+<!--					<div class="blur-bg" style="">-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--			<div class="owl-theme">-->
+<!--				<div class="custom-nav owl-nav"></div>-->
+<!--			</div>	-->
+		</div>
 
-			<div class="owl-theme">
-				<div class="custom-nav owl-nav"></div>
-			</div>	
+
 		</div>
 
 	</div>
+
+	</div>
 </div>
+
+<!-- GLIDE -->
+
+
+
+
+
+
 <div class="container-fluid follow mb-5">
 	<h2 class="p-3 text-center">Follow us on</h2>
 	<div class="social-list d-flex justify-content-center pb-5 pt-4">
@@ -365,8 +400,10 @@ customers.<p>
     // "global" vars
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
 <script type="text/javascript" src="/js/carousel.js"> </script>
 <script type="text/javascript" src="/js/podcast.js"> </script>
+
 </html>
 
 			

@@ -326,53 +326,67 @@ Servive, Copper page
 
 
 .carousel-container {
-    height: auto;
+    height: 400px;
     background-color: #3d3d3d;
     z-index: 2000;
-}
-.owl-carousel {
-    max-width: 1120px;
-}
 
-.owl-carousel .item {
-    /* width: 20vw; */
 }
-.owl-item {
+.glide {
+    height: 100%;
     display: flex;
     justify-content: center;
-    border-radius: 10px;
+    align-items: center;
 }
-.owl-carousel .item img {
-    border-radius: 15px;
-}
-.owl-next {
-    background: url(../images/podcast/icon/arrow.svg);
-    width: 70px;
-    height: 70px;
-    border: none;
-    background-color: transparent;
-    position: absolute;
-    top: 50%;
-    right: 10vw;
-    z-index: 1000;
-    display: block;
-    rotate: 180deg;
-}
-.owl-prev {
-    background: url(../images/podcast/icon/arrow.svg);
-    width: 70px;
-    height: 70px;
-    border: none;
-    background-color: transparent;
-    position: absolute;
-    top: 50%;
-    left: 10vw;
-    z-index: 1000;
-    display: block;
+.glide__track {
+    max-width: 1120px;
+    min-width: 1120px;
+    /*display: flex;*/
+    align-items: center;
 }
 
-.owl-carousel .item > .item-title-bg {
-    width: 100%;
+.glide__slide {
+    width: 400px;
+    justify-content: center;
+    border-radius: 10px;
+    position: relative;
+    margin-top: 50px;
+}
+.glide .glide__slide img {
+    border-radius: 15px;
+}
+.glide__arrows {
+
+}
+
+.glide__arrow{
+    max-width: 1400px;
+    border: 0px !important;
+    box-shadow: none !important;
+    transform: none !important;
+    top:40% !important;
+}
+.glide__arrow--right {
+    background: url(../images/podcast/icon/arrow.svg);
+    width: 70px;
+    height: 70px;
+    background-color: transparent;
+    position: relative;
+    right: 18rem !important;
+    z-index: 1000;
+    rotate: 180deg;
+}
+
+.glide__arrow--left {
+    background: url(../images/podcast/icon/arrow.svg);
+    width: 70px;
+    height: 70px;
+    background-color: transparent;
+    left: 18rem !important;
+    z-index: 1000;
+}
+
+.glide .glide__slide > .item-title-bg {
+    width: 300px;
     background-color: #0a4a6b;
     height: 100px;
     transform: translateY(-50%);
@@ -388,7 +402,7 @@ Servive, Copper page
 .play-bt-hv {
     visibility: hidden;
 }
-.owl-carousel .item:hover .play-bt-hv {
+.glide .glide__slide:hover .play-bt-hv {
     visibility: visible;
 }
 
@@ -401,12 +415,12 @@ Servive, Copper page
 .blur-bg {
     position: absolute!important;
     width: 100%;
-    height: 100%;
+    height: 90%;
     top:0px;
     background-color: rgba(61, 61, 61, 0.5);
     z-index: 3000;
 }
-.owl-item.active.center .blur-bg{
+.glide__slide--active .blur-bg{
     display: none;
 }
 
