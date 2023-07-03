@@ -18,12 +18,13 @@
 <link rel="stylesheet" type="text/css" href="/css/style.css">
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.0/dist/css/glide.core.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.0"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
 <!--Owk carousel-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
-
 </head>
 <body>
 
@@ -61,7 +62,6 @@
 					<!--<li><a href="blog.html">Blog</a></li>-->
 					<li><a href="contact.html" style="text-decoration: none">Contact Us</a></li>
 				</ul>
-	
 			</div>
 
 		</div>
@@ -81,12 +81,12 @@
             </div>
           </div>
           <div class="col-sm-8">
-            <div class="row episode-created-date padding0-5rem" id="last-ep-date">8 January, 2023</div>
-            <h4 class="row episode-no padding0-5rem" id="last-ep-num">Episode #134</h4>
+            <div class="row episode-created-date padding0-5rem" id="last-ep-date"></div>
+            <h4 class="row episode-no padding0-5rem" id="last-ep-num"></h4>
             <h2 class="row episode-title text-uppercase padding0-5rem">
-				<b class="p-0" id ="last-ep-title">WHAT IS METAL SCRAPPING?</b>
+				<b class="p-0" id ="last-ep-title"></b>
             </h2>
-            <div class="row episode-description"><p id="last-ep-description">"Hey there, let me tell you a little about scrap metal. You see, scrap metal is a vital part of the metal recycling industry. It comes from a variety of sources such as old vehicles, building demolition, and discarded household appliances. But, that's not where its story ends."</p></div>
+            <div class="row episode-description"><p id="last-ep-description"></p></div>
             <div class="row padding0-5rem listen-on">Listen on:</div>
           </div>
         </div>
@@ -153,14 +153,14 @@
 
 		<div class="container autoplay-button d-flex">
 			<div class="ms-auto me-5 ">Autoplay</div>
-			<span class="auto-play-btn on">
-				<div class="auto-play-btn-thumb on"></div>
+			<span class="auto-play-btn off">
+				<div class="auto-play-btn-thumb off"></div>
 			</span>
 		</div>
 
 		<div class="container_fluid carousel-container mt-2">		
 			<div class="owl-carousel owl-theme container d-flex align-items-center p-0 pt-5">
-				<div class="item ">
+				<div class="item">
 					<img src="../images/podcast/podcast.png" alt="" class="" style="width:300px;height:300px">
 					<div class="play-bt-hv">
 						<img src="../images/podcast/icon/play.svg" alt="" id="carousel-play-bt" class="carousel-play-bt" style="width:7rem">
@@ -171,28 +171,8 @@
 					<div class="blur-bg" style="">
 					</div>
 				</div>
-				<div class="item ">
-					<img src="../images/podcast/podcast.png" alt="" class="" style="width:300px;height:300px">
-					<div class="play-bt-hv">
-						<img src="../images/podcast/icon/play.svg" alt="" class="carousel-play-bt" style="width:7rem">
-					</div>
-					<div class="item-title-bg carousel-podcast-title" >
-						<p>#123. Title of the podcast</p>
-					</div>
-					<div class="blur-bg" style="">
-					</div>
-				</div>
-				<div class="item ">
-					<img src="../images/podcast/podcast.png" alt="" class="" style="width:300px;height:300px">
-					<div class="play-bt-hv">
-						<img src="../images/podcast/icon/play.svg" alt="" class="carousel-play-bt" style="width:7rem">
-					</div>
-					<div class="item-title-bg carousel-podcast-title" >
-						<p>#123. Title of the podcast</p>
-					</div>
-					<div class="blur-bg" style="">
-					</div>
-				</div>
+
+
 			</div>
 
 			<div class="owl-theme">
@@ -385,6 +365,7 @@ customers.<p>
     // "global" vars
 
 </script>
+<script type="text/javascript" src="/js/carousel.js"> </script>
 <script type="text/javascript" src="/js/podcast.js"> </script>
 </html>
 

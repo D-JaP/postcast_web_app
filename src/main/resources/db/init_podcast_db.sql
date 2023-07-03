@@ -10,7 +10,8 @@ CREATE TABLE podcast (
     author TEXT,
     directory TEXT NOT NULL,
     series_id INTEGER,
-    description TEXT
+    description TEXT,
+    duration_in_second INT
 );
 
 -- DROP TABLE IF EXISTS series;

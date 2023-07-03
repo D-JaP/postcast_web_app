@@ -44,4 +44,8 @@ public class Podcast {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "duration_in_second")
+    private int duration;
+
+
 }
