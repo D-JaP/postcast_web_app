@@ -3,11 +3,9 @@ package com.resteel.podcast_web_app.Model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -47,5 +45,18 @@ public class Podcast {
     @Column(name = "duration_in_second")
     private int duration;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinTable(
+            name = "podcast_tag",
+            joinColumns = @JoinColumn(name = "podcast_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<Tag> tags;
 
+    public void addTag(Tag tag){
+        if (tags == null){
+            tags = new ArrayList<Tag>();
+        }
+        tags.add(tag);
+    }
 }

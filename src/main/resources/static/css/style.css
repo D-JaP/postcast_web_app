@@ -326,10 +326,10 @@ Servive, Copper page
 
 
 .carousel-container {
-    height: 400px;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
     background-color: #3d3d3d;
     z-index: 2000;
-
 }
 .glide {
     height: 100%;
@@ -338,8 +338,8 @@ Servive, Copper page
     align-items: center;
 }
 .glide__track {
-    max-width: 1120px;
-    min-width: 1120px;
+    max-width: 1100px;
+    min-width: 1100px;
     /*display: flex;*/
     align-items: center;
 }
@@ -349,10 +349,9 @@ Servive, Copper page
     justify-content: center;
     border-radius: 10px;
     position: relative;
-    margin-top: 50px;
 }
 .glide .glide__slide img {
-    border-radius: 15px;
+    border-radius: 15px 15px 0 0;
 }
 .glide__arrows {
 
@@ -385,33 +384,147 @@ Servive, Copper page
     z-index: 1000;
 }
 
-.glide .glide__slide > .item-title-bg {
+.glide .glide__slide .item-title-bg {
     width: 300px;
     background-color: #0a4a6b;
     height: 100px;
-    transform: translateY(-50%);
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
-
     font-size: 1.3rem;
     font-weight: 300;
     color: #fff;
     padding: 15px 20px 15px 20px;
 }
 
-.play-bt-hv {
-    visibility: hidden;
+.grey-img {
+    filter: grayscale(100%);
+    transitionL: filter 0.3 ease;
 }
+
+
+.play-bt-hv {
+    visibility: hidden ;
+}
+
+.carousel-hover-description {
+    width: 90%;
+    height: 300px;
+    padding: 1rem;
+    position: absolute;
+    text-decoration: none;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    color: white;
+}
+.carousel-hover-description > .description{
+    height: 13.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 9;
+    -webkit-box-orient: vertical;
+}
+
+.img-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background-color: rgba(0,0,0,0.6);
+    transition: opacity 0.3s ease;
+    border-radius: 15px 15px 0 0;
+}
+
+.glide .glide__slide:hover .img-overlay{
+    opacity: 1;
+}
+
 .glide .glide__slide:hover .play-bt-hv {
     visibility: visible;
 }
 
 .carousel-play-bt {
     position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-70%,-70%);
+    width:4rem
+
 }
+.loadmore-glide {
+    width: 300px;
+    height: 400px;
+    background-color: #858383;
+    color: white;
+    border-radius: 15px;
+    font-size: 2rem;
+}
+
+.loadmore-glide:hover {
+
+}
+
+/*  playing css for carousel  */
+.carousel-playing {
+    background: rgba(255,255,255,.1);
+    width: 2rem;
+    height: 2rem;
+    border-radius: .3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: .5rem;
+    box-sizing: border-box;
+    z-index: 1000;
+    visibility: visible !important;
+}
+
+.carousel-playing .playing__bar {
+    display: inline-block;
+    background: white;
+    width: 30%;
+    height: 100%;
+    animation: up-and-down 2.0s ease infinite alternate;
+}
+
+.carousel-playing .playing__bar1 {
+    height: 60%;
+}
+
+.carousel-playing .playing__bar2 {
+    height: 30%;
+    animation-delay: -2.2s;
+}
+
+.carousel-playing .playing__bar3 {
+    height: 75%;
+    animation-delay: -3.7s;
+}
+
+@keyframes up-and-down {
+    10% {
+        height: 30%;
+    }
+
+    30% {
+        height: 100%;
+    }
+
+    60% {
+        height: 50%;
+    }
+
+    80% {
+        height: 75%;
+    }
+
+    100% {
+        height: 60%;
+    }
+}
+/********************/
+
 .blur-bg {
     position: absolute!important;
     width: 100%;
@@ -437,9 +550,33 @@ Servive, Copper page
 .social-list .social-fol {
     padding-left: 40px;
     padding-right: 40px;
+    color: white;
 }
 
 /* list of episode */
+
+.card {
+    width: 300px;
+    height: 450px;
+    flex-basis: calc(80% / 3);
+    max-width: calc(80% / 3);
+    margin-left: calc(20% / 6);
+    margin-right: calc(20% / 6);
+    margin-bottom: 3rem;
+}
+
+
+.card:hover {
+    transform: translateY(-2%);
+    transition: 0.1s linear ;
+}
+.tags-container {
+    width: 1000px;
+}
+.tags{
+    max-width: 1200px;
+}
+
 .tag {
     background-color: #0a4a6b;
     color: #fff;
@@ -468,9 +605,30 @@ Servive, Copper page
 .card-date {
     color: #959595;
 }
+.card-title {
+    height: 1.4rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.card-text {
+    height: 4.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
 #lm-btn {
     background-color: #0a4a6b;
 }
+
+
+
 /*
 End podcast
 */

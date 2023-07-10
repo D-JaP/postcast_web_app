@@ -18,7 +18,7 @@
 <link rel="stylesheet" type="text/css" href="/css/style.css">
 <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.core.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.core.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.theme.css">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.2.min.js" integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
@@ -83,7 +83,9 @@
           </div>
           <div class="col-sm-8">
             <div class="row episode-created-date padding0-5rem" id="last-ep-date"></div>
-            <h4 class="row episode-no padding0-5rem" id="last-ep-num"></h4>
+            <div class="row episode-no" >
+				<h4 class="ps-2">Episode #<span id="last-ep-num"></span></h4>
+			</div>
             <h2 class="row episode-title text-uppercase padding0-5rem">
 				<b class="p-0" id ="last-ep-title"></b>
             </h2>
@@ -110,7 +112,6 @@
 					<span class="vol-control d-flex align-items-center">
 						<img src="/images/podcast/icon/audio.svg" fill="#fff" class="vol-control-icon">
 						<div class="vol-container d-flex align-items-center">
-
 							<div class="vol-bar">
 								<div class="vol-bar-current">
 									<span class="vol-bar-node"></span>
@@ -163,19 +164,7 @@
 			<div class="glide">
 				<div class="glide__track " data-glide-el="track">
 					<ul class="glide__slides">
-						<li class="glide__slide">
-							<img src="../images/podcast/podcast.png" alt="" class="" style="width:300px;height:300px">
-							<div class="play-bt-hv">
-								<img src="../images/podcast/icon/play.svg" alt="" id="carousel-play-bt" class="carousel-play-bt" style="width:7rem">
-							</div>
-							<div class="item-title-bg carousel-podcast-title" id="carousel-podcast-id">
-								<p>#1. Title of the podcast</p>
-							</div>
-<!--							<div class="blur-bg" style="">-->
-<!--							</div>-->
-						</li>
-
-
+						<!--dynamic add item here-->
 					</ul>
 				</div>
 
@@ -218,127 +207,86 @@
 
 
 <div class="container-fluid follow mb-5">
-	<h2 class="p-3 text-center">Follow us on</h2>
+	<h2 class="p-3 text-center" id="follow-us">Follow us on</h2>
 	<div class="social-list d-flex justify-content-center pb-5 pt-4">
-		<div class="social-fol  text-center">
+		<a href="https://open.spotify.com/" class="social-fol  text-center text-decoration-none">
 			<img src="../images/podcast/icon/spotify.svg" alt="" class="pb-2" width="70px">
 			<br>
 			Spotify
-		</div>
-		<div class="social-fol  text-center">
-			<img src="../images/podcast/icon/spotify.svg" alt="" class="pb-2" width="70px">
+		</a>
+		<a href="https://facebook.com/" class="social-fol  text-center text-decoration-none">
+			<img src="../images/podcast/icon/facebook.svg" alt="" class="pb-2" width="70px">
 			<br>
-			Spotify
-		</div>
-		<div class="social-fol  text-center">
-			<img src="../images/podcast/icon/spotify.svg" alt="" class="pb-2" width="70px">
+			Facebook
+		</a>
+		<a href="https://soundcloud.com/" class="social-fol  text-center text-decoration-none">
+			<img src="../images/podcast/icon/soundcloud.svg" alt="" class="pb-2" width="70px">
 			<br>
-			Spotify
-		</div>
-		<div class="social-fol  text-center">
-			<img src="../images/podcast/icon/spotify.svg" alt="" class="pb-2" width="70px">
+			Soundcloud
+		</a>
+		<a href="https://podcasts.google.com/" class="social-fol  text-center text-decoration-none">
+			<img src="../images/podcast/icon/google-podcasts.svg" alt="" class="pb-2" width="70px">
 			<br>
-			Spotify
-		</div>
+			Google Podcast
+		</a>
 	</div>
 </div>
 
 <div class="container-fluid all-episode">
-	<h2 class="text-center mb-4">Episode</h2>
-	<div class="tags text-center mb-4">
-		<div class="btn tag badge text-wrap">all</div>
-		<div class="btn tag badge text-wrap">science</div>
-		<div class="btn tag badge text-wrap">environment</div>
-		<div class="btn tag badge text-wrap">health</div>
-		<div class="btn tag badge text-wrap">politics</div>
-		<div class="btn tag badge text-wrap">automation</div>
+
+	<h2 class="text-center mb-4" id="episode-list">Episode</h2>
+	<div class="tags-container d-flex justify-content-center ms-auto me-auto">
+		<div class="tags text-center mb-4 ">
+			<div class="btn tag badge text-wrap mb-3">all</div>
+		</div>
 	</div>
 
 	<div class="container p-5">
-		<div class="cards">
-			<div class="row">
-				<div class="col d-flex justify-content-center" >
-					<div class="card shadow mb-5" style="width:19rem">
-						<img src="../images/podcast/podcast.png" class="card-img-top" alt="" width="300px" height="300px">
-						<div class="card-body pt-1">
-							<div class="d-flex justify-content-between">
-								<p class="card-date">8 January, 2023</p>
-								<p class="card-date">20:15</p>
-							</div>
-							<h5 class="card-title">#123.Card title</h5>
-							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-						</div>
+		<div class="podcast-cards cards d-flex flex-wrap">
+			<div class="card shadow">
+				<img src="../images/podcast/podcast.png" class="card-img-top" alt="" width="300px" height="300px">
+				<div class="card-body pt-1">
+					<div class="d-flex justify-content-between">
+						<p class="card-date">8 January, 2023</p>
+						<p class="card-date">20:15</p>
 					</div>
-				</div>
-				<div class="col d-flex justify-content-center">
-					<div class="card shadow mb-5" style="width:19rem">
-						<img src="../images/podcast/podcast.png" class="card-img-top" alt="" width="300px" height="300px">
-						<div class="card-body pt-1">
-							<div class="d-flex justify-content-between">
-								<p class="card-date">8 January, 2023</p>
-								<p class="card-date">20:15</p>
-							</div>
-							<h5 class="card-title">#123.Card title</h5>
-							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-						</div>
-					</div>
-				</div>
-				<div class="col d-flex justify-content-center">
-					<div class="card shadow mb-5" style="width:19rem">
-						<img src="../images/podcast/podcast.png" class="card-img-top" alt="" width="300px" height="300px">
-						<div class="card-body pt-1">
-							<div class="d-flex justify-content-between">
-								<p class="card-date">8 January, 2023</p>
-								<p class="card-date">20:15</p>
-							</div>
-							<h5 class="card-title">#123.Card title</h5>
-							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-						</div>
-					</div>
+					<h5 class="card-title">#123.Card title</h5>
+					<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col d-flex justify-content-center" >
-					<div class="card shadow" style="width:19rem">
-						<img src="../images/podcast/podcast.png" class="card-img-top" alt="" width="300px" height="300px">
-						<div class="card-body pt-1">
-							<div class="d-flex justify-content-between">
-								<p class="card-date">8 January, 2023</p>
-								<p class="card-date">20:15</p>
-							</div>
-							<h5 class="card-title">#123.Card title</h5>
-							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-						</div>
+			<div class="card shadow" >
+				<img src="../images/podcast/podcast.png" class="card-img-top" alt="" width="300px" height="300px">
+				<div class="card-body pt-1">
+					<div class="d-flex justify-content-between">
+						<p class="card-date">8 January, 2023</p>
+						<p class="card-date">20:15</p>
 					</div>
-				</div>
-				<div class="col d-flex justify-content-center">
-					<div class="card shadow" style="width:19rem">
-						<img src="../images/podcast/podcast.png" class="card-img-top" alt="" width="300px" height="300px">
-						<div class="card-body pt-1">
-							<div class="d-flex justify-content-between">
-								<p class="card-date">8 January, 2023</p>
-								<p class="card-date">20:15</p>
-							</div>
-							<h5 class="card-title">#123.Card title</h5>
-							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-						</div>
-					</div>
-				</div>
-				<div class="col d-flex justify-content-center">
-					<div class="card shadow" style="width:19rem">
-						<img src="../images/podcast/podcast.png" class="card-img-top" alt="" width="300px" height="300px">
-						<div class="card-body pt-1">
-							<div class="d-flex justify-content-between">
-								<p class="card-date">8 January, 2023</p>
-								<p class="card-date">20:15</p>
-							</div>
-							<h5 class="card-title">#123.Card title</h5>
-							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-						</div>
-					</div>
+					<h5 class="card-title">#123.Card title</h5>
+					<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 				</div>
 			</div>
-			
+			<div class="card shadow" >
+				<img src="../images/podcast/podcast.png" class="card-img-top" alt="" width="300px" height="300px">
+				<div class="card-body pt-1">
+					<div class="d-flex justify-content-between">
+						<p class="card-date">8 January, 2023</p>
+						<p class="card-date">20:15</p>
+					</div>
+					<h5 class="card-title">#123.Card title</h5>
+					<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+				</div>
+			</div>
+			<div class="card shadow" >
+				<img src="../images/podcast/podcast.png" class="card-img-top" alt="" width="300px" height="300px">
+				<div class="card-body pt-1">
+					<div class="d-flex justify-content-between">
+						<p class="card-date">8 January, 2023</p>
+						<p class="card-date">20:15</p>
+					</div>
+					<h5 class="card-title">#123.Card title</h5>
+					<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+				</div>
+			</div>
 		</div>
 		<div class="text-center">
 			<div class="btn btn-primary text-center" id="lm-btn">Load more..</div>
@@ -401,8 +349,8 @@ customers.<p>
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
-<script type="text/javascript" src="/js/carousel.js"> </script>
-<script type="text/javascript" src="/js/podcast.js"> </script>
+<script type="text/javascript" src="/js/podcast.js" defer> </script>
+
 
 </html>
 
