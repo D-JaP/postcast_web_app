@@ -10,11 +10,5 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class PodcastService {
-//    private final PodcastRepository podcastRepository;
-//
-//    List<Podcast> getPodcastInRange(Long podcastId, int range){
-//        Long minId = podcastId - range;
-//        Long maxId = podcastId + range;
-//        return podcastRepository.findByIdBetween(minId, maxId);
-//    }
+
 }

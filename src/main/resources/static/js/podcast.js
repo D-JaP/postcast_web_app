@@ -20,15 +20,18 @@ currentPodcast.onreadystatechange = function () {
 
             mediaPlayer.querySelector('#last-ep-img').setAttribute('src', response.coverImgPath);
 
-            mediaPlayer.querySelector('#last-ep-title').innerHTML = response.title.toUpperCase();
+            mediaPlayer.querySelector('#last-ep-title').innerHTML = response.title;
 
             mediaPlayer.querySelector('#last-ep-num').innerHTML = response.id;
             current_play_id = response.id
 
             mediaPlayer.querySelector('.time-left').innerHTML = getTimeFromNum(response.duration);
 
-            playingPodcastPath = response.directory;
+            mediaPlayer.querySelector('#last-ep-author').innerHTML = response.authors
+            mediaPlayer.querySelector('#last-ep-author-mb').innerHTML = response.authors
 
+            playingPodcastPath = response.directory;
+            adjustCarouselTopPosition();
 
         }
         else{
@@ -38,6 +41,7 @@ currentPodcast.onreadystatechange = function () {
     }
 }
 currentPodcast.send();
+
 
 function getDateFromTimestamp(createdTime) {
     let created_date = new Date(createdTime * 1000)
@@ -250,6 +254,17 @@ function getTimeFromNum(num_of_second){
 
 
 /****************************  Carousel ******************************/
+/*mobile view*/
+function adjustCarouselTopPosition(){
+    const player_view = document.querySelector(".banner")
+    const descriptionHeight= document.querySelector(".ep-description-mb")
+    if (window.matchMedia("(max-width: 600px)").matches){
+        player_view.style.paddingBottom=descriptionHeight.offsetHeight +"px"
+        console.log(123)
+    }
+}
+/*end mobile view*/
+
 let glide = new Glide('.glide', {
     type: 'slider',
     focusAt: 'center',      // Center the currently focused item
@@ -300,6 +315,13 @@ let loadmore_glide = () => {
         </a>
 </li>`
 }
+let html_ep_slide = (imgSrc, title, description) => {
+    return `<div class="item">
+					<img class="img-fluid img-responsive img-rounded ava-img" src=${imgSrc}>
+					<h3 class="item-title">${title}</h3>
+					<p class="item-description">${description}</p>
+			</div>`
+}
 
 
 const queryRelatedPodcasts = (current_play_id) => {
@@ -314,6 +336,15 @@ const queryRelatedPodcasts = (current_play_id) => {
             if( relatedPodcasts.status == 200){
                 let response = JSON.parse(relatedPodcasts.responseText)
                 const podcastList = response._embedded.podcasts
+
+                /* for mobile views*/
+                if (window.matchMedia("(max-width:600px)").matches) {
+                    const ep_items = document.querySelector(".ep-items")
+                    podcastList.forEach((podcast) => {
+                        ep_items.insertAdjacentHTML('beforeend',html_ep_slide(podcast.coverImgPath,podcast.title, podcast.description))
+                    })
+                }
+
                 podcastList.forEach((podcast) => {
                     glideTrack.insertAdjacentHTML('beforeend', html_glide(podcast.id, podcast.coverImgPath, podcast.title, podcast.description, current_play_id ));
                 })
