@@ -13,7 +13,8 @@ CREATE TABLE podcast (
     series_id INTEGER,
     description TEXT,
     duration_in_second INT,
-    tag TEXT
+    tag TEXT,
+    page TEXT
 );
 
 

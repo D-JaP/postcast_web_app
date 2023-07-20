@@ -45,6 +45,9 @@ public class Podcast {
     @Column(name = "duration_in_second")
     private int duration;
 
+    @Column(name = "page")
+    private String page;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "podcast_tag",

@@ -258,24 +258,20 @@ function getTimeFromNum(num_of_second){
 function adjustCarouselTopPosition(){
     const player_view = document.querySelector(".banner")
     const descriptionHeight= document.querySelector(".ep-description-mb")
-    if (window.matchMedia("(max-width: 600px)").matches){
+    if (window.matchMedia("(max-width: 767px)").matches){
         player_view.style.paddingBottom=descriptionHeight.offsetHeight +"px"
-        console.log(123)
     }
 }
 /*end mobile view*/
 
 let glide = new Glide('.glide', {
-    type: 'slider',
+    type: 'slide',
     focusAt: 'center',      // Center the currently focused item
     rewind: false,     // Equivalent to loop: false in Owl Carousel
     gap: 100,           // Equivalent to margin: 80 in Owl Carousel
     perView: 3,        // Equivalent to items: 1 in Owl Carousel
     width :300,
     breakpoints: {
-        600: { perView: 1 },   // Responsive settings for width >= 600px
-        1024: { perView: 3 },  // Responsive settings for width >= 1024px
-        1366: { perView: 3 }   // Responsive settings for width >= 1366px
     }}).mount();
 
 const glideTrack = document.querySelector('.glide__track .glide__slides');
@@ -296,14 +292,13 @@ let html_glide =(number , imgLink, title,description, current_play_id ) => {
                 <div class="row ms-auto mt-auto">
                     ${(number !=current_play_id)? `<img src="../images/podcast/icon/play.svg" alt="" class="carousel-play-bt p-0 collapse show">`:'' }
                     ${number == current_play_id?  html_playing:''}
-                    
                 </div>
             </div>
             <div class="item-title-bg carousel-podcast-title" id="carousel-podcast-id">
                 <p>#<span>${number}</span>. ${title}</p>
             </div>
         </a>
-<!--        <div class="blur-bg" style="">-->
+        <div class="blur-bg" style="">
         </div>
 </li>`
 }
@@ -315,11 +310,13 @@ let loadmore_glide = () => {
         </a>
 </li>`
 }
-let html_ep_slide = (imgSrc, title, description) => {
+let html_ep_slide = (imgSrc, title, description, id) => {
     return `<div class="item">
 					<img class="img-fluid img-responsive img-rounded ava-img" src=${imgSrc}>
 					<h3 class="item-title">${title}</h3>
 					<p class="item-description">${description}</p>
+                    ${(id !=current_play_id)? `<img src="../images/podcast/icon/play.svg" alt="" class="carousel-play-bt p-0 collapse show">`:'' }
+                    ${id == current_play_id?  html_playing:''}
 			</div>`
 }
 
@@ -338,10 +335,10 @@ const queryRelatedPodcasts = (current_play_id) => {
                 const podcastList = response._embedded.podcasts
 
                 /* for mobile views*/
-                if (window.matchMedia("(max-width:600px)").matches) {
+                if (window.matchMedia("(max-width:767px)").matches) {
                     const ep_items = document.querySelector(".ep-items")
                     podcastList.forEach((podcast) => {
-                        ep_items.insertAdjacentHTML('beforeend',html_ep_slide(podcast.coverImgPath,podcast.title, podcast.description))
+                        ep_items.insertAdjacentHTML('beforeend',html_ep_slide(podcast.coverImgPath,podcast.title, podcast.description, podcast.id))
                     })
                 }
 
@@ -364,11 +361,24 @@ const queryRelatedPodcasts = (current_play_id) => {
                         behavior: 'smooth'
                     });
                 })
+
+
+                updateGlideArrowDisableEffect();
+
+
             }
         }
     }
     relatedPodcasts.send()
 }
+/*   a bug in glide effect, dynamically add item to glide not change effect
+*    of left glide arrow   */
+function updateGlideArrowDisableEffect() {
+    const glideLeftArrow = document.querySelector('.glide__arrow--left')
+    glideLeftArrow.classList.remove("glide__arrow--disabled")
+}
+
+
 
 let current_ep_num_element = document.querySelector('#last-ep-num')
 
@@ -395,7 +405,7 @@ queryPodcastByUrl(urlQueryAllPodcast).then(result => {
 
 let btnLoadMore = document.querySelector('#lm-btn')
 btnLoadMore.addEventListener('click', () => {
-    const numCard = document.querySelectorAll('.card')
+    const numCard = document.querySelectorAll('.ep-card')
     let currentTag = localStorage.getItem("tag")
     if (currentTag==null) {
         currentTag = "all"
@@ -406,6 +416,7 @@ btnLoadMore.addEventListener('click', () => {
     }
 
     let postfix = `&page=${currentPage}&size=6`
+
     queryPodcastByTag(currentTag, postfix).then((result) => {
         if (result.length==0){
             toggleOffLoadmoreBtn()
@@ -416,8 +427,13 @@ btnLoadMore.addEventListener('click', () => {
     })
 })
 
-
 /* Query list of tag */
+let tag_html = (name) => {
+    return `<div class="btn tag badge text-wrap mb-3">${name}</div>`
+}
+let tag_html_mb = (name) => {
+    return `<div class="tag-btn-mb">${name}</div>`
+}
 
 let listOfTag = new XMLHttpRequest();
 listOfTag.open('GET', '/tags')
@@ -428,16 +444,29 @@ listOfTag.onreadystatechange = () => {
             const tag_container = document.querySelector('.tags')
             let response = JSON.parse(listOfTag.response)
             let tag_names = response._embedded.tags
+
+            /* for mobile view*/
+            if (window.matchMedia("(max-width: 767px").matches) {
+                tag_names.forEach((tag) =>{
+                    tag_container.insertAdjacentHTML('beforeend', tag_html_mb(tag.name))
+                })
+            }
+
             tag_names.forEach((tag) => {
-                tag_container.insertAdjacentHTML('beforeend',`<div class="btn tag badge text-wrap mb-3">${tag.name}</div>`)
+                tag_container.insertAdjacentHTML('beforeend',tag_html(tag.name))
             })
 
-            const tag_btns = tag_container.querySelectorAll('.tag')
+
+            let tag_btns = tag_container.querySelectorAll('.tag')
+            if (window.matchMedia("(max-width: 767px").matches) {
+                tag_btns = tag_container.querySelectorAll('.tag-btn-mb')
+            }
             //all-tag will sort by desc
             tag_btns[0].addEventListener('click', ()=> {
                 let url = `podcasts?sort=id,desc`
                 let listPodcast
                 localStorage.setItem("tag", "all")
+                changeTagBtnEffect(tag_btns,tag_btns[0])
                 queryPodcastByUrl(url).then(result => {
                     listPodcast = result;
                     updateCardByPodcastList(listPodcast)
@@ -449,7 +478,7 @@ listOfTag.onreadystatechange = () => {
             tag_btns_arr.slice(1).forEach((tag_btn) => {
                 tag_btn.addEventListener('click', () => {
                     localStorage.setItem("tag", tag_btn.innerHTML)
-
+                    changeTagBtnEffect(tag_btns,tag_btn)
                     queryPodcastByTag(tag_btn.innerHTML, ).then(result => {
                         updateCardByPodcastList(result)
                     })
@@ -460,10 +489,15 @@ listOfTag.onreadystatechange = () => {
 }
 listOfTag.send()
 
+// helper function for change tag btn effect onlick same as hover
+function changeTagBtnEffect(tag_btns, tag_btn) {
+    tag_btns.forEach((tag) => tag.classList.remove("tag-hover"))
+    tag_btn.classList.add("tag-hover")
+}
 /*   Query list of podcasts   */
 
 let card_html = (card_img_link, ep_date, ep_number, ep_title, ep_description, ep_duration) => {
-    return `<div class="card shadow">
+    return `<div class="card shadow ep-card">
         <img src=${card_img_link} class="card-img-top" alt="" width="300px" height="300px">
             <div class="card-body pt-1">
                 <div class="d-flex justify-content-between">
@@ -476,16 +510,34 @@ let card_html = (card_img_link, ep_date, ep_number, ep_title, ep_description, ep
     </div>`
 }
 
+let card_html_mb = (card_img_link, card_title, card_description, article_link) =>{
+    return `<a class="item ep-card" href=${article_link}>
+					<img class="img-fluid img-responsive img-rounded ava-img" src=${card_img_link}>
+					<h3 class="item-title">${card_title}</h3>
+					<p class="item-description">${card_description}</p>
+			</a>`
+}
+
+
 function updateCardByPodcastList(listPodcast, appendMode= false) {
     if (listPodcast == null) return
     const cardContainer = document.querySelector(".podcast-cards")
+
     if(appendMode == false){
         cardContainer.innerHTML = ""
     }
 
-    Array.from(listPodcast).slice(0,6).forEach((podcast) => {
-        cardContainer.insertAdjacentHTML('beforeend', card_html(podcast.coverImgPath, getDateFromTimestamp(podcast.createdTime), podcast.id, podcast.title, podcast.description, getTimeFromNum(podcast.duration)))
-    })
+    if(window.matchMedia("(max-width:767px)").matches){
+        Array.from(listPodcast).slice(0,6).forEach((podcast) => {
+            cardContainer.insertAdjacentHTML('beforeend', card_html_mb(podcast.coverImgPath, podcast.title, podcast.description, podcast.page))
+        })
+    }
+    else {
+        Array.from(listPodcast).slice(0,6).forEach((podcast) => {
+            cardContainer.insertAdjacentHTML('beforeend', card_html(podcast.coverImgPath, getDateFromTimestamp(podcast.createdTime), podcast.id, podcast.title, podcast.description, getTimeFromNum(podcast.duration)))
+        })
+    }
+
     if(listPodcast.length <6) {
         toggleOffLoadmoreBtn()
     }

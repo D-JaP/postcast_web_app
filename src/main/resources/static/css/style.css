@@ -122,13 +122,14 @@ Servive, Podcast page
     display: none;
     flex-basis: 100%;
 }
-
+.nav-item {
+    white-space: nowrap;
+}
 .banner {
-    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(../images/pro-banner/wwr-banner.jpg) top center no-repeat;
+    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(../images/pro-banner/wwr-banner.jpg) center center no-repeat;
     background-size: cover;
     /*height: 600px;*/
     padding: 25px 50px;
-    background-position-y: -250px;
     /*box-shadow: 2px 2px 2px #858383;*/
     border-bottom:  1px solid var(--break-line-color)
 }
@@ -373,6 +374,7 @@ Servive, Podcast page
     padding-bottom: 2rem;
     background-color: #3d3d3d;
     z-index: 2000;
+    overflow: hidden;
 }
 .glide {
     height: 100%;
@@ -413,7 +415,6 @@ Servive, Podcast page
     height: 70px;
     background-color: transparent;
     position: relative;
-    right: 18rem !important;
     z-index: 1000;
     rotate: 180deg;
 }
@@ -423,7 +424,6 @@ Servive, Podcast page
     width: 70px;
     height: 70px;
     background-color: transparent;
-    left: 18rem !important;
     z-index: 1000;
 }
 
@@ -571,7 +571,7 @@ Servive, Podcast page
 .blur-bg {
     position: absolute!important;
     width: 100%;
-    height: 90%;
+    height: 100%;
     top:0px;
     background-color: rgba(61, 61, 61, 0.5);
     z-index: 3000;
@@ -594,6 +594,7 @@ Servive, Podcast page
     padding-left: 40px;
     padding-right: 40px;
     color: white;
+    justify-content: center;
 }
 
 /* list of episode */
@@ -634,7 +635,15 @@ Servive, Podcast page
     background-color: #ffffff;
     border-color: #0a4a6b;
     outline: 1px solid #0a4a6b;
+    color: #151515;
 }
+.tag-hover{
+    background-color: #ffffff;
+    border-color: #0a4a6b;
+    outline: 1px solid #0a4a6b;
+    color: #151515!important;
+}
+
 .cards .row {
     margin-bottom: 2rem;
 }
@@ -643,7 +652,7 @@ Servive, Podcast page
     width: 100%;
     height: 18rem;
     object-fit: cover;
-    padding: 1rem 1rem 0rem 1rem;
+    padding: 0;
 }
 .card-date {
     color: #959595;
@@ -668,6 +677,7 @@ Servive, Podcast page
 
 #lm-btn {
     background-color: #0a4a6b;
+    margin-bottom: 20px;
 }
 
 /*
@@ -766,7 +776,7 @@ End podcast
 .recycle .owl-carousel{padding:0 70px 0 70px; margin:auto}
 .recycle span { font-size: 50px; position: relative; top: -11px; color: #151515; }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 767px) {
     #navbar {
         display: none!important;
     }
@@ -893,9 +903,9 @@ End podcast
 
     .thumb-art {
         padding: 0;
-        width: 80px;
+        width: 90px;
         float: right;
-        height: 80px;
+        height: 90px;
     }
     .ava-img {
         border-radius: 5px;
@@ -968,7 +978,15 @@ End podcast
     .carousel-container{
         display: none;
     }
-
+    .carousel-playing{
+        position: absolute;
+        top: 45px;
+        left: 45px;
+        transform: translate(-50%,-50%);
+    }
+    .carousel-play-bt{
+        display: none;
+    }
     .listen-on{
         display: none;
     }
@@ -978,19 +996,23 @@ End podcast
     }
     .slider-list-mb{
         padding: 10px 10px 0 10px;
+        display: flex;
+        justify-content: center;
     }
 
     .ep-items {
-        height: 200px;
+        height: 320px;
         overflow-y: auto;
+        max-width: 600px;
     }
     .ep-items .item {
         border-bottom: 1px solid var(--break-line-color);
         margin-bottom: 10px;
+        position: relative;
     }
     .ep-items .item>img{
-        width: 70px;
-        height: 70px;
+        width: 90px;
+        height: 90px;
         float: left;
         margin-right: 10px;
         border-radius: 5px!important;
@@ -1021,16 +1043,254 @@ End podcast
 
 
 
+    .podcast-cards .item {
+        border-bottom: 1px solid var(--break-line-color);
+        margin-bottom: 10px;
+        text-decoration: none;
+
+    }
+    .podcast-cards .item>img{
+        width: 90px;
+        height: 90px;
+        float: left;
+        margin-right: 10px;
+        border-radius: 5px!important;
+    }
+    .podcast-cards .item>h3 {
+        color: #151515;
+        font-size: 16px;
+        max-height: 70px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        max-height: 100px;
+    }
+    .podcast-cards .item>p {
+        margin-bottom: 3px;
+        padding-top: 5px;
+        font-size: 16px;
+        color: #858383;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        max-height: 100px;
+    }
 
 
     .follow {
+        background: none;
+        margin-top: 5px;
+    }
+    .social-list {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 5px!important;
+    }
+    .social-fol{
+        background: #0a4a6b;
+        border-radius: 5px;
+        width: 65%;
+        margin-left: auto;
+        margin-right:auto;
+        margin-bottom: 10px;
+        padding-left: 15px!important;
+        padding-right:15px!important;
+    }
+    .social-fol>img{
+        float: left;
+        width: 50px!important;
+        margin: 10px;
+        padding: 0!important;
+    }
+    .podcast-provider {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 500;
+    }
+    .tags-container{
+        border-bottom: 1px solid var(--break-line-color);
+    }
+    .tags {
+        display: inline-flex;
+        overflow-x: auto;
+        margin-bottom: 0!important;
+    }
+    .btn.tag {
         display: none;
     }
-    .all-episode {
+
+    .tag-btn-mb{
+        font-size: 20px;
+        font-weight: 600;
+        padding: 15px;
+        text-transform: capitalize;
+        height: min-content;
+        display: inline;
+        white-space: nowrap;
+        color: #858383;
+    }
+    .tag-hover{
+        color: #151515!important;
+        outline: none;
+    }
+
+    .podcast-cards{
         display: none;
     }
+
+
     .footer {
-        display: none;
+        /*display: none;*/
+        margin-top: 20px;
+        padding: 20px 20px;
+    }
+
+    .footer .footer-logo >img{
+        width: 200px;
+    }
+}
+
+@media screen and (max-width: 350px){
+    .social-fol{
+        padding-left: 15px!important;
+        padding-right:15px!important;
+        width: 85%;
+    }
+}
+
+@media screen and (max-width: 480px) and (min-width: 350px){
+    .social-fol{
+        padding-left: 20px!important;
+        padding-right:20px!important;
+        width: 75%;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .media-player {
+        padding: 50px 50px 50px 50px;
+    }
+    .thumb-art {
+        float: none;
+        padding: 0 0 1rem 0;
+
+    }
+    .banner {
+        background-size: cover;
+        background-position-y: 0;
+    }
+    .vol-control {
+        display: none!important;
+    }
+    .glide__track {
+        /*position: relative;*/
+    }
+    .glide__arrow--left {
+        left: 6%!important;
+        z-index: 2000;
+    }
+    .glide__arrow--right {
+        right: 6%!important;
+        z-index: 2000;
+    }
+    .glide__arrows {
+        z-index: 2000;
+    }
+    .glide{
+        zoom: 0.8;
+        -moz-transform: scale(0.7);
+    }
+
+    .glide .glide__slide--active .play-bt-hv {
+        visibility: visible;
+        transition: 0.5s;
+    }
+    .glide .glide__slide--active .img-overlay{
+        opacity: 1;
+        transition: 0.5s;
+    }
+
+    .card {
+        width: 280px;
+        height: 450px;
+        flex-basis: calc(90% / 2);
+        max-width: calc(90% / 2);
+        margin-left: 15px;
+        margin-right: 15px;
+        margin-bottom: 3rem;
+    }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1440px){
+    .media-player {
+        padding: 50px 50px 50px 50px;
+    }
+
+    .banner {
+        background-size: cover;
+    }
+
+    .glide{
+        position: relative;
+    }
+    .glide__track {
+        /*position: relative;*/
+    }
+
+    .glide__arrow--left {
+        left: 6%!important;
+        z-index: 2000;
+    }
+    .glide__arrow--right {
+        right: 6%!important;
+        z-index: 2000;
+    }
+    .glide__arrows {
+        z-index: 2000;
+    }
+
+    .thumb-art {
+        padding-right: 32px;
+    }
+    .card-container {
+        padding-left: 5px!important;
+        padding-right: 5px!important;
+    }
+
+    .card {
+        width: 300px;
+        height: 450px;
+        flex-basis: calc(90% / 3);
+        max-width: calc(90% / 3);
+        margin-left: calc(10% /6);
+        margin-right: calc(10% /6);
+        margin-bottom: 3rem;
+    }
+
+}
+
+@media screen and (min-width: 1440px) {
+    .media-player {
+        padding: 50px 50px 50px 50px;
+    }
+    .thumb-art {
+        padding-right: 32px;
+    }
+    .glide__arrow--left {
+        left: calc( (100vw - 1200px)/2 - 50px)!important;
+        /*left: 100px;*/
+        z-index: 2000;
+    }
+    .glide__arrow--right {
+        right: calc( (100vw - 1200px)/2 - 50px)!important;
+        z-index: 2000;
+    }
+    .glide__arrows {
+        z-index: 2000;
     }
 
 
