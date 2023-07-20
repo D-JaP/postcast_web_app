@@ -584,8 +584,17 @@ function queryPodcastByTag(tagName, postfix = ""){
 }
 
 
-
-
+topScrollHandler()
+function topScrollHandler(){
+    const topScrollBtn = document.querySelector(".top-scroll")
+    topScrollBtn.addEventListener("click", () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+        console.log(123)
+    })
+}
 
 
 
