@@ -1,9 +1,17 @@
+/* Thymeleaf variable*/
+
+
+// const hostname = window.location.hostname;
+const hostname = "http://localhost:8080"
+
+
 /*--------------------------------------------------------------------------------------------------------------------*/
 // Ajax request for podcast
 let playingPodcastPath;
-let current_play_id;
+const current_play_id = ep_id;
+let epLink;
 let currentPodcast = new XMLHttpRequest();
-currentPodcast.open('GET', '/podcasts/1', true );
+currentPodcast.open('GET', '/podcasts/' + ep_id, true );
 currentPodcast.setRequestHeader('Content-Type', 'application/json'); // Set the appropriate content type header
 currentPodcast.setRequestHeader('Access-Control-Allow-Origin', '*');
 currentPodcast.onreadystatechange = function () {
@@ -23,7 +31,8 @@ currentPodcast.onreadystatechange = function () {
             mediaPlayer.querySelector('#last-ep-title').innerHTML = response.title;
 
             mediaPlayer.querySelector('#last-ep-num').innerHTML = response.id;
-            current_play_id = response.id
+
+            epLink = response.directory
 
             mediaPlayer.querySelector('.time-left').innerHTML = getTimeFromNum(response.duration);
 
@@ -70,7 +79,7 @@ window.addEventListener('load', () => {
     play_btn.addEventListener("click", () =>{
         if(is_loaded == false){
             audio = new Howl({
-                src: ['/episode/second_episode.mp3'],
+                src: [ hostname + '/episodes/second_episode.mp3'],
                 html5: true,
                 preload: true,
                 loop: false,
@@ -190,7 +199,7 @@ window.addEventListener('load', () => {
         play_bar.addEventListener("mousedown", e => {
             if (!is_loaded){
                 audio = new Howl({
-                    src: ['/episode/second_episode.mp3'],
+                    src: [hostname + '/episodes/second_episode.mp3'],
                     html5: true,
                     preload: true,
                     loop: false,
@@ -280,9 +289,9 @@ let html_playing = `<div class="carousel-playing collapse show">
                        <span class="playing__bar playing__bar2"></span>
                        <span class="playing__bar playing__bar3"></span>
                     </div>`
-let html_glide =(number , imgLink, title,description, current_play_id ) => {
+let html_glide =(number , imgLink, title,description, current_play_id, episode_link ) => {
     return `<li class="glide__slide">
-        <a href="../images/podcast/icon/play.svg" class="text-decoration-none d-block position-relative" >
+        <a href=${episode_link} class="text-decoration-none d-block position-relative" >
             <div class="position-relative">
                 <img src=${imgLink} alt="" class="grey-filter" style="width:300px;height:300px">
                 <div class="img-overlay"></div>
@@ -298,8 +307,8 @@ let html_glide =(number , imgLink, title,description, current_play_id ) => {
                 <p>#<span>${number}</span>. ${title}</p>
             </div>
         </a>
-        <div class="blur-bg" style="">
-        </div>
+        <a href=${episode_link} class="blur-bg" style="">
+        </a>
 </li>`
 }
 
@@ -310,14 +319,14 @@ let loadmore_glide = () => {
         </a>
 </li>`
 }
-let html_ep_slide = (imgSrc, title, description, id) => {
-    return `<div class="item">
+let html_ep_slide = (imgSrc, title, description, id, episode_link) => {
+    return `<a href=${episode_link} class="item">
 					<img class="img-fluid img-responsive img-rounded ava-img" src=${imgSrc}>
 					<h3 class="item-title">${title}</h3>
 					<p class="item-description">${description}</p>
                     ${(id !=current_play_id)? `<img src="../images/podcast/icon/play.svg" alt="" class="carousel-play-bt p-0 collapse show">`:'' }
                     ${id == current_play_id?  html_playing:''}
-			</div>`
+			</a>`
 }
 
 
@@ -338,12 +347,12 @@ const queryRelatedPodcasts = (current_play_id) => {
                 if (window.matchMedia("(max-width:767px)").matches) {
                     const ep_items = document.querySelector(".ep-items")
                     podcastList.forEach((podcast) => {
-                        ep_items.insertAdjacentHTML('beforeend',html_ep_slide(podcast.coverImgPath,podcast.title, podcast.description, podcast.id))
+                        ep_items.insertAdjacentHTML('beforeend',html_ep_slide(podcast.coverImgPath,podcast.title, podcast.description, podcast.id,hostname + podcast.page))
                     })
                 }
 
                 podcastList.forEach((podcast) => {
-                    glideTrack.insertAdjacentHTML('beforeend', html_glide(podcast.id, podcast.coverImgPath, podcast.title, podcast.description, current_play_id ));
+                    glideTrack.insertAdjacentHTML('beforeend', html_glide(podcast.id, podcast.coverImgPath, podcast.title, podcast.description, current_play_id, hostname + podcast.page ));
                 })
                 glideTrack.insertAdjacentHTML('beforeend', loadmore_glide());
                 glide.update({
@@ -397,7 +406,7 @@ observer.observe(current_ep_num_element, {childList: true});
 /* Default podcasts with "all" */
 
 localStorage.getItem("tag")
-let urlQueryAllPodcast = `podcasts?sort=id,desc`
+let urlQueryAllPodcast =hostname + `/podcasts?sort=id,desc`
 queryPodcastByUrl(urlQueryAllPodcast).then(result => {
     let listPodcast =Array.from(result)  ;
     updateCardByPodcastList(listPodcast.slice(0,6))
@@ -463,7 +472,7 @@ listOfTag.onreadystatechange = () => {
             }
             //all-tag will sort by desc
             tag_btns[0].addEventListener('click', ()=> {
-                let url = `podcasts?sort=id,desc`
+                let url = hostname +`/podcasts?sort=id,desc`
                 let listPodcast
                 localStorage.setItem("tag", "all")
                 changeTagBtnEffect(tag_btns,tag_btns[0])
@@ -496,25 +505,25 @@ function changeTagBtnEffect(tag_btns, tag_btn) {
 }
 /*   Query list of podcasts   */
 
-let card_html = (card_img_link, ep_date, ep_number, ep_title, ep_description, ep_duration) => {
-    return `<div class="card shadow ep-card">
+let card_html = (card_img_link, ep_date, ep_number, ep_title, ep_description, ep_duration, episode_link) => {
+    return `<a href=${episode_link} class="card shadow ep-card">
         <img src=${card_img_link} class="card-img-top" alt="" width="300px" height="300px">
             <div class="card-body pt-1">
                 <div class="d-flex justify-content-between">
-                    <p class="card-date">${ep_date}</p>
-                    <p class="card-date">${ep_duration}</p>
+                    <p class="card-date ">${ep_date}</p>
+                    <p class="card-date ">${ep_duration}</p>
                 </div>
-                <h5 class="card-title">#${ep_number}. ${ep_title}</h5>
-                <p class="card-text">${ep_description}</p>
+                <h5 class="card-title ">#${ep_number}. ${ep_title}</h5>
+                <p class="card-text ">${ep_description}</p>
             </div>
-    </div>`
+    </a>`
 }
 
-let card_html_mb = (card_img_link, card_title, card_description, article_link) =>{
-    return `<a class="item ep-card" href=${article_link}>
+let card_html_mb = (card_img_link, card_title, card_description, episode_link) =>{
+    return `<a href=${episode_link} class="item ep-card" href=${article_link}>
 					<img class="img-fluid img-responsive img-rounded ava-img" src=${card_img_link}>
-					<h3 class="item-title">${card_title}</h3>
-					<p class="item-description">${card_description}</p>
+					<h3 class="item-title ">${card_title}</h3>
+					<p class="item-description ">${card_description}</p>
 			</a>`
 }
 
@@ -534,7 +543,7 @@ function updateCardByPodcastList(listPodcast, appendMode= false) {
     }
     else {
         Array.from(listPodcast).slice(0,6).forEach((podcast) => {
-            cardContainer.insertAdjacentHTML('beforeend', card_html(podcast.coverImgPath, getDateFromTimestamp(podcast.createdTime), podcast.id, podcast.title, podcast.description, getTimeFromNum(podcast.duration)))
+            cardContainer.insertAdjacentHTML('beforeend', card_html(podcast.coverImgPath, getDateFromTimestamp(podcast.createdTime), podcast.id, podcast.title, podcast.description, getTimeFromNum(podcast.duration), podcast.page))
         })
     }
 
@@ -579,7 +588,7 @@ function queryPodcastByUrl(url) {
 
 function queryPodcastByTag(tagName, postfix = ""){
     let queryByTagUrl = `/podcasts/search/findPodcastsByTagsName?name=` + tagName + postfix
-    if (tagName== "all") queryByTagUrl =`/podcasts?sort=id,desc` + postfix
+    if (tagName== "all") queryByTagUrl = hostname + `/podcasts?sort=id,desc` + postfix
     return queryPodcastByUrl(queryByTagUrl)
 }
 
@@ -596,5 +605,8 @@ function topScrollHandler(){
     })
 }
 
-
+/* Autoplay handler */
+function autoRedirect() {
+    const newUrl = document
+}
 

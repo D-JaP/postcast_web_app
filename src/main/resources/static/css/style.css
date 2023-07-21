@@ -607,6 +607,7 @@ Servive, Podcast page
     margin-left: calc(20% / 6);
     margin-right: calc(20% / 6);
     margin-bottom: 3rem;
+    text-decoration: none;
 }
 
 
@@ -664,6 +665,7 @@ Servive, Podcast page
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+    color: #151515;
 }
 
 .card-text {
@@ -673,6 +675,7 @@ Servive, Podcast page
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    color: #151515;
 }
 
 #lm-btn {

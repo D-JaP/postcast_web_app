@@ -19,8 +19,12 @@ public class SecurityConfiguration {
                         "/images/**",
                         "/js/**",
                         "/src/**",
-                            "/podcasts/**",
-                            "/tags/**"
+                        "/podcasts/**",
+                        "/tags/**",
+
+                        "/episodes/*"
+
+
                     )
                     .permitAll()
                     .anyRequest().authenticated();
