@@ -875,11 +875,18 @@ End podcast
         top:100px;
     }
     .play-bar-container {
-        padding: 0 4rem;
+        width: calc(min(100vw , 576px) - 9rem);
+        margin: 0 4rem;
         position: relative;
         top:96px;
         z-index: 1000;
     }
+    @media  screen  and (min-width: 576px) {
+        .play-bar-container {
+            width: calc(540px - 8rem) !important;
+        }
+    }
+
     .play-time {
         width: 100%;
         padding: 0 0.5rem!important;
@@ -1009,10 +1016,16 @@ End podcast
         max-width: 600px;
     }
     .ep-items .item {
+        display: block;
         border-bottom: 1px solid var(--break-line-color);
         margin-bottom: 10px;
         position: relative;
+        text-decoration: none;
     }
+    .ep-items .item:last-child{
+        border-bottom: none;
+    }
+
     .ep-items .item>img{
         width: 90px;
         height: 90px;

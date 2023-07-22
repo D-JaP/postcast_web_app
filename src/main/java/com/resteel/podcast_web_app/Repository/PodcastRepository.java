@@ -27,5 +27,6 @@ public interface PodcastRepository extends JpaRepository<Podcast, Long> {
     @Query("SELECT p from Podcast p join p.tags t where t.name=:name order by p.id desc")
     Page<Podcast> findPodcastsByTagsName(String name, Pageable pageable);
 
-
+    @Query(value = "SELECT * from Podcast p WHERE p.id > (SELECT p2.id FROM Podcast p2 where p2.slug =:slug) ORDER BY p.id ASC LIMIT 1", nativeQuery = true)
+    Podcast findNextEpisode(String slug);
 }

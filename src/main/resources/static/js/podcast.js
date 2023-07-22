@@ -1,15 +1,11 @@
 /* Thymeleaf variable*/
-
-
 // const hostname = window.location.hostname;
 const hostname = "http://localhost:8080"
-
-
+const epPath = epDirectory;
 /*--------------------------------------------------------------------------------------------------------------------*/
 // Ajax request for podcast
 let playingPodcastPath;
 const current_play_id = ep_id;
-let epLink;
 let currentPodcast = new XMLHttpRequest();
 currentPodcast.open('GET', '/podcasts/' + ep_id, true );
 currentPodcast.setRequestHeader('Content-Type', 'application/json'); // Set the appropriate content type header
@@ -31,8 +27,6 @@ currentPodcast.onreadystatechange = function () {
             mediaPlayer.querySelector('#last-ep-title').innerHTML = response.title;
 
             mediaPlayer.querySelector('#last-ep-num').innerHTML = response.id;
-
-            epLink = response.directory
 
             mediaPlayer.querySelector('.time-left').innerHTML = getTimeFromNum(response.duration);
 
@@ -74,26 +68,71 @@ const vol_bar =audioPLayer.querySelector(".vol-container");
 const play_bar =audioPLayer.querySelector(".play-bar-container");
 const current_play_bar = audioPLayer.querySelector(".play-current")
 
-let audio, audioPosBeforePlay
+let audio, audioPosBeforePlay, playFromAuto
+
+/*flow*/
+//
 window.addEventListener('load', () => {
+    let auto_play  = localStorage.getItem("auto-play")
+    if ( auto_play == "true" ){
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioContext = new AudioContext();
+        if (audioContext.state === "running"){
+            loadHowlerJs()
+            mediaPlayerSetup()
+            playAudio()
+            playFromAuto = true
+        }
+    }
+
     play_btn.addEventListener("click", () =>{
+        if (playFromAuto!=true){
+            loadHowlerJs()
+            mediaPlayerSetup()
+            //play audio for first time
+            playAudioWithInitPos()
+
+        }
+    }, {once : true})
+
+    loadAutoPlaySetting();
+    loadVolumeLevel(audio);
+    addVolBarHandler();
+    addPlaybarHandler()
+    addAutoPlayBtnHandler();
+
+    // load howlerjs audio
+    function loadHowlerJs(){
         if(is_loaded == false){
             audio = new Howl({
-                src: [ hostname + '/episodes/second_episode.mp3'],
+                src: [ hostname + epPath],
                 html5: true,
                 preload: true,
                 loop: false,
             });
             is_loaded = true;
         }
-
+    }
+    // mediaplayer settup
+    function mediaPlayerSetup(){
         addAudioEndHandler(audio);
         loadVolumeLevel(audio);
         addPlayStopButtonHandler(play_btn, audio);
         addReWindForwardBtnHandler(rw, fw, audio);
-
-
-        //play audio for first time
+        addUpdateTimePlayBar(audio)
+        if(auto_play == "true") {
+            addAutoPlayHandler(audio, 5);
+        }
+    }
+    // play audio for 1st time
+    function playAudio(){
+        setTimeout(() => {
+            audio.play();
+        }, 500)
+        play_btn.classList.remove('pause');
+        play_btn.classList.add('play');
+    }
+    function playAudioWithInitPos() {
         if (audioPosBeforePlay != null){
             audio.pause()
             audio.seek(audioPosBeforePlay)
@@ -105,24 +144,7 @@ window.addEventListener('load', () => {
         }
         play_btn.classList.remove('pause');
         play_btn.classList.add('play');
-        // audio player bar
-        setInterval(() => {
-            if (audio){
-                current_play_bar.style.width = audio.seek() / audio.duration() * 100 + "%";
-                time_pass.innerHTML = getTimeFromNum(audio.seek());
-                time_left.innerHTML = getTimeFromNum(audio.duration()-audio.seek());
-            }
-        }, 250);
-
-
-    }, {once : true})
-
-    loadAutoPlaySetting();
-    loadVolumeLevel(audio);
-    addVolBarHandler();
-    addPlaybarHandler()
-    addAutoPlayBtnHandler();
-
+    }
     // set audio volume
     function addVolBarHandler() {
         vol_bar.addEventListener("click", e => {
@@ -199,7 +221,7 @@ window.addEventListener('load', () => {
         play_bar.addEventListener("mousedown", e => {
             if (!is_loaded){
                 audio = new Howl({
-                    src: [hostname + '/episodes/second_episode.mp3'],
+                    src: [hostname + epPath],
                     html5: true,
                     preload: true,
                     loop: false,
@@ -215,10 +237,20 @@ window.addEventListener('load', () => {
             if (is_loaded){
                 audioPosBeforePlay = new_pos * audio.duration();
             }
+            audio.load()
             audio.seek(new_pos * audio.duration());
             current_play_bar.style.width = (new_pos * 100)+'%';
-
         })
+    }
+
+    function addUpdateTimePlayBar(audio){
+        setInterval(() => {
+            if (audio){
+                current_play_bar.style.width = audio.seek() / audio.duration() * 100 + "%";
+                time_pass.innerHTML = getTimeFromNum(audio.seek());
+                time_left.innerHTML = getTimeFromNum(audio.duration()-audio.seek());
+            }
+        }, 250);
     }
 
     function addAutoPlayBtnHandler(){
@@ -249,6 +281,16 @@ window.addEventListener('load', () => {
             auto_play_btn_thumb.classList.remove('off');
             auto_play_btn_thumb.classList.add('on');
         }
+    }
+/*   Add Auto play handler after s second    */
+    function addAutoPlayHandler(audio, second) {
+        audio.on('end', () => {
+            if (nextEpisodeLink != null){
+                setTimeout(() => {
+                    window.location.href = hostname + nextEpisodeLink
+                }, second*1000)
+            }
+        })
     }
 
 });
@@ -299,7 +341,7 @@ let html_glide =(number , imgLink, title,description, current_play_id, episode_l
             <div class="container carousel-hover-description play-bt-hv d-flex flex-column">
                 <div class="row description">${description}</div>
                 <div class="row ms-auto mt-auto">
-                    ${(number !=current_play_id)? `<img src="../images/podcast/icon/play.svg" alt="" class="carousel-play-bt p-0 collapse show">`:'' }
+                    ${(number !=current_play_id)? `<img src=${ hostname + "/images/podcast/icon/play.svg"} alt="" class="carousel-play-bt p-0 collapse show">`:'' }
                     ${number == current_play_id?  html_playing:''}
                 </div>
             </div>
@@ -324,11 +366,10 @@ let html_ep_slide = (imgSrc, title, description, id, episode_link) => {
 					<img class="img-fluid img-responsive img-rounded ava-img" src=${imgSrc}>
 					<h3 class="item-title">${title}</h3>
 					<p class="item-description">${description}</p>
-                    ${(id !=current_play_id)? `<img src="../images/podcast/icon/play.svg" alt="" class="carousel-play-bt p-0 collapse show">`:'' }
+                    ${(id !=current_play_id)? `<img src=${hostname+ "/images/podcast/icon/play.svg"} alt="" class="carousel-play-bt p-0 collapse show">`:'' }
                     ${id == current_play_id?  html_playing:''}
 			</a>`
 }
-
 
 const queryRelatedPodcasts = (current_play_id) => {
     let minId = current_play_id-3;
@@ -349,6 +390,10 @@ const queryRelatedPodcasts = (current_play_id) => {
                     podcastList.forEach((podcast) => {
                         ep_items.insertAdjacentHTML('beforeend',html_ep_slide(podcast.coverImgPath,podcast.title, podcast.description, podcast.id,hostname + podcast.page))
                     })
+                    /* moving scroll to current playing episode*/
+                    const item = document.querySelector(".ep-items .item")
+                    const itemHeight = item.offsetHeight + parseInt(window.getComputedStyle(item).marginBottom) ;
+                    ep_items.scrollTop = itemHeight * (current_play_id - podcastList[0].id )
                 }
 
                 podcastList.forEach((podcast) => {
@@ -520,7 +565,7 @@ let card_html = (card_img_link, ep_date, ep_number, ep_title, ep_description, ep
 }
 
 let card_html_mb = (card_img_link, card_title, card_description, episode_link) =>{
-    return `<a href=${episode_link} class="item ep-card" href=${article_link}>
+    return `<a href=${episode_link} class="item ep-card" >
 					<img class="img-fluid img-responsive img-rounded ava-img" src=${card_img_link}>
 					<h3 class="item-title ">${card_title}</h3>
 					<p class="item-description ">${card_description}</p>
@@ -601,7 +646,6 @@ function topScrollHandler(){
             top: 0,
             behavior: "smooth"
         });
-        console.log(123)
     })
 }
 

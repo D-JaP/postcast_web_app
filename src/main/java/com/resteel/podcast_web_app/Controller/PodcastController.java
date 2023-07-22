@@ -22,6 +22,9 @@ public class PodcastController {
     @GetMapping("/episode/{slug}")
     public String episodePage(Model model, @PathVariable String slug){
         model.addAttribute("epID", podcastService.findIdBySlug(slug));
+        model.addAttribute("epDirectory", podcastService.findDirectoryBySlug(slug));
+        model.addAttribute("nextEpisodeLink", podcastService.findNextEpisode(slug));
+        System.out.println(podcastService.findNextEpisode(slug));
         return "index";
     }
 
