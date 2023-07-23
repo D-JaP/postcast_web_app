@@ -2,48 +2,27 @@
 // const hostname = window.location.hostname;
 const hostname = "http://localhost:8080"
 const epPath = epDirectory;
+currentPodcast = JSON.parse(currentPodcast)
+
 /*--------------------------------------------------------------------------------------------------------------------*/
-// Ajax request for podcast
+// Update media player information
 let playingPodcastPath;
-const current_play_id = ep_id;
-let currentPodcast = new XMLHttpRequest();
-currentPodcast.open('GET', '/podcasts/' + ep_id, true );
-currentPodcast.setRequestHeader('Content-Type', 'application/json'); // Set the appropriate content type header
-currentPodcast.setRequestHeader('Access-Control-Allow-Origin', '*');
-currentPodcast.onreadystatechange = function () {
-    if (currentPodcast.readyState == XMLHttpRequest.DONE){
-        if (currentPodcast.status === 200) {
-            let response = JSON.parse(currentPodcast.responseText);
-            let mediaPlayer = document.querySelector('.media-player')
 
-            const formattedDate = getDateFromTimestamp(response.createdTime)
+const current_play_id = currentPodcast.id;
+let mediaPlayer = document.querySelector('.media-player')
 
-            mediaPlayer.querySelector('#last-ep-date').innerHTML = formattedDate;
+const formattedDate = getDateFromTimestamp(currentPodcast.createdTime)
 
-            mediaPlayer.querySelector('#last-ep-description').innerHTML = response.description;
-
-            mediaPlayer.querySelector('#last-ep-img').setAttribute('src', response.coverImgPath);
-
-            mediaPlayer.querySelector('#last-ep-title').innerHTML = response.title;
-
-            mediaPlayer.querySelector('#last-ep-num').innerHTML = response.id;
-
-            mediaPlayer.querySelector('.time-left').innerHTML = getTimeFromNum(response.duration);
-
-            mediaPlayer.querySelector('#last-ep-author').innerHTML = response.authors
-            mediaPlayer.querySelector('#last-ep-author-mb').innerHTML = response.authors
-
-            playingPodcastPath = response.directory;
-            adjustCarouselTopPosition();
-
-        }
-        else{
-        //    error handle
-
-        }
-    }
-}
-currentPodcast.send();
+mediaPlayer.querySelector('#last-ep-date').innerHTML = formattedDate;
+mediaPlayer.querySelector('#last-ep-description').innerHTML = currentPodcast.description;
+mediaPlayer.querySelector('#last-ep-img').setAttribute('src', currentPodcast.coverImgPath);
+mediaPlayer.querySelector('#last-ep-title').innerHTML = currentPodcast.title;
+mediaPlayer.querySelector('#last-ep-num').innerHTML = currentPodcast.id;
+mediaPlayer.querySelector('.time-left').innerHTML = getTimeFromNum(currentPodcast.duration);
+mediaPlayer.querySelector('#last-ep-author').innerHTML = currentPodcast.authors
+mediaPlayer.querySelector('#last-ep-author-mb').innerHTML = currentPodcast.authors
+playingPodcastPath = currentPodcast.directory;
+adjustCarouselTopPosition();
 
 
 function getDateFromTimestamp(createdTime) {
@@ -70,8 +49,6 @@ const current_play_bar = audioPLayer.querySelector(".play-current")
 
 let audio, audioPosBeforePlay, playFromAuto
 
-/*flow*/
-//
 window.addEventListener('load', () => {
     let auto_play  = localStorage.getItem("auto-play")
     if ( auto_play == "true" ){
@@ -383,7 +360,6 @@ const queryRelatedPodcasts = (current_play_id) => {
             if( relatedPodcasts.status == 200){
                 let response = JSON.parse(relatedPodcasts.responseText)
                 const podcastList = response._embedded.podcasts
-
                 /* for mobile views*/
                 if (window.matchMedia("(max-width:767px)").matches) {
                     const ep_items = document.querySelector(".ep-items")
@@ -415,11 +391,7 @@ const queryRelatedPodcasts = (current_play_id) => {
                         behavior: 'smooth'
                     });
                 })
-
-
                 updateGlideArrowDisableEffect();
-
-
             }
         }
     }
@@ -432,21 +404,7 @@ function updateGlideArrowDisableEffect() {
     glideLeftArrow.classList.remove("glide__arrow--disabled")
 }
 
-
-
-let current_ep_num_element = document.querySelector('#last-ep-num')
-
-const observer = new MutationObserver((mutations) =>{
-    for (const mutation of mutations) {
-        if(mutation.type === 'childList'){
-            queryRelatedPodcasts(parseInt(current_ep_num_element.innerHTML))
-            //disconnect after once execute
-            observer.disconnect()
-        }
-    }
-})
-
-observer.observe(current_ep_num_element, {childList: true});
+queryRelatedPodcasts(currentPodcast.id)
 
 /* Default podcasts with "all" */
 
