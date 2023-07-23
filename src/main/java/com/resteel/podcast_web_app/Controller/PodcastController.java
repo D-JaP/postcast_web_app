@@ -15,7 +15,6 @@ public class PodcastController {
     @GetMapping("/")
     public String index(Model model){
         model.addAttribute("lastestPodcast", podcastService.findLastestPodcast());
-        System.out.println(podcastService.findLastestPodcast());
         return "index";
     }
 
