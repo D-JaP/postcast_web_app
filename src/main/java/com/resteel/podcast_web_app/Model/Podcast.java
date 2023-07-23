@@ -1,5 +1,6 @@
 package com.resteel.podcast_web_app.Model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -54,6 +55,7 @@ public class Podcast {
             joinColumns = @JoinColumn(name = "podcast_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
+    @JsonManagedReference
     private List<Tag> tags;
 
     public void addTag(Tag tag){

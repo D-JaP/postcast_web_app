@@ -17,6 +17,7 @@ public interface PodcastRepository extends JpaRepository<Podcast, Long> {
 
     Optional<Podcast> findById(long id);
 
+    @Query("select  p from Podcast p where p.id > :minId and p.id <= :maxId")
     List<Podcast> findByIdBetween(@Param("minId") Long minId, @Param("maxId") Long maxId);
 
     Optional<List<Podcast>> findPodcastsByTagsId(long id);
@@ -29,4 +30,7 @@ public interface PodcastRepository extends JpaRepository<Podcast, Long> {
 
     @Query(value = "SELECT * from Podcast p WHERE p.id > (SELECT p2.id FROM Podcast p2 where p2.slug =:slug) ORDER BY p.id ASC LIMIT 1", nativeQuery = true)
     Podcast findNextEpisode(String slug);
+
+    @Query(value = "SELECT * from Podcast p order by p.id desc limit 1", nativeQuery = true)
+    Podcast findLastestPodcast();
 }

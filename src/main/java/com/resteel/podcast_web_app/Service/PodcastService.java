@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 public class PodcastService {
     private final PodcastRepository podcastRepository;
     public Long findIdBySlug(String slug){
-        Podcast podcast  = podcastRepository.findPodcastBySlug(slug).orElseThrow(() -> new PodcastNotFoundException("Podcast not found"));
+        Podcast podcast  = podcastRepository.findPodcastBySlug(slug).orElseThrow(() -> new PodcastNotFoundException("Podcast not found. Failed to get Id"));
         return podcast.getId();
     }
 
     public String findDirectoryBySlug(String slug) {
-        return podcastRepository.findPodcastBySlug(slug).orElseThrow(()-> new PodcastNotFoundException("Podcast not found")).getPath();
+        return podcastRepository.findPodcastBySlug(slug).orElseThrow(()-> new PodcastNotFoundException("Podcast not found. Failed to get directory")).getPath();
     }
 
     public String findNextEpisode(String slug) {
@@ -35,6 +35,17 @@ public class PodcastService {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(podcastRepository.findPodcastBySlug(slug).get());
+        }
+        catch (JsonProcessingException ex) {
+            ex.printStackTrace();
+            return "{}";
+        }
+    }
+
+    public String findLastestPodcast() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try{
+            return objectMapper.writeValueAsString(podcastRepository.findLastestPodcast());
         }
         catch (JsonProcessingException ex) {
             ex.printStackTrace();

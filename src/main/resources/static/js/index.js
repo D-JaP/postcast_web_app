@@ -2,8 +2,7 @@
 // const hostname = window.location.hostname;
 const hostname = "http://localhost:8080"
 const epPath = epDirectory;
-currentPodcast = JSON.parse(currentPodcast)
-
+currentPodcast = JSON.parse(lastestPodcast)
 /*--------------------------------------------------------------------------------------------------------------------*/
 // Update media player information
 let playingPodcastPath;
@@ -18,12 +17,18 @@ mediaPlayer.querySelector('#last-ep-description').innerHTML = currentPodcast.des
 mediaPlayer.querySelector('#last-ep-img').setAttribute('src', currentPodcast.coverImgPath);
 mediaPlayer.querySelector('#last-ep-title').innerHTML = currentPodcast.title;
 mediaPlayer.querySelector('#last-ep-num').innerHTML = currentPodcast.id;
-mediaPlayer.querySelector('.time-left').innerHTML = getTimeFromNum(currentPodcast.duration);
+mediaPlayer.querySelectorAll('.main-ep-duration').forEach((s) => s.innerHTML = parseInt(currentPodcast.duration /60) + "m")
 mediaPlayer.querySelector('#last-ep-author').innerHTML = currentPodcast.authors
 mediaPlayer.querySelector('#last-ep-author-mb').innerHTML = currentPodcast.authors
 playingPodcastPath = currentPodcast.directory;
 adjustCarouselTopPosition();
 
+
+// handle click
+const mainEpisode = document.querySelector(".ep-description-mb")
+mainEpisode.addEventListener("click", () =>{
+    window.location.href = hostname + currentPodcast.page;
+})
 
 function getDateFromTimestamp(createdTime) {
     let created_date = new Date(createdTime * 1000)
@@ -37,240 +42,9 @@ const audioPLayer = document.querySelector(".media-player");
 let is_loaded = false;
 // toggle play/pause
 const play_btn = audioPLayer.querySelector("#play-btn");
-const rw = audioPLayer.querySelector("#rewind-btn");
-const fw = audioPLayer.querySelector("#forward-btn");
-const time_pass = audioPLayer.querySelector(".time-pass");
-const time_left = audioPLayer.querySelector(".play-time .time-left");
-const auto_play_btn = document.querySelector('.auto-play-btn');
-const auto_play_btn_thumb = auto_play_btn.querySelector('.auto-play-btn-thumb');
-const vol_bar =audioPLayer.querySelector(".vol-container");
-const play_bar =audioPLayer.querySelector(".play-bar-container");
 const current_play_bar = audioPLayer.querySelector(".play-current")
 
 let audio, audioPosBeforePlay, playFromAuto
-
-window.addEventListener('load', () => {
-    let auto_play  = localStorage.getItem("auto-play")
-    if ( auto_play == "true" ){
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const audioContext = new AudioContext();
-        if (audioContext.state === "running"){
-            loadHowlerJs()
-            mediaPlayerSetup()
-            playAudio()
-            playFromAuto = true
-        }
-    }
-
-    play_btn.addEventListener("click", () =>{
-        if (playFromAuto!=true){
-            loadHowlerJs()
-            mediaPlayerSetup()
-            //play audio for first time
-            playAudioWithInitPos()
-
-        }
-    }, {once : true})
-
-    loadAutoPlaySetting();
-    loadVolumeLevel(audio);
-    addVolBarHandler();
-    addPlaybarHandler()
-    addAutoPlayBtnHandler();
-
-    // load howlerjs audio
-    function loadHowlerJs(){
-        if(is_loaded == false){
-            audio = new Howl({
-                src: [ hostname + epPath],
-                html5: true,
-                preload: true,
-                loop: false,
-            });
-            is_loaded = true;
-        }
-    }
-    // mediaplayer settup
-    function mediaPlayerSetup(){
-        addAudioEndHandler(audio);
-        loadVolumeLevel(audio);
-        addPlayStopButtonHandler(play_btn, audio);
-        addReWindForwardBtnHandler(rw, fw, audio);
-        addUpdateTimePlayBar(audio)
-        if(auto_play == "true") {
-            addAutoPlayHandler(audio, 5);
-        }
-    }
-    // play audio for 1st time
-    function playAudio(){
-        setTimeout(() => {
-            audio.play();
-        }, 500)
-        play_btn.classList.remove('pause');
-        play_btn.classList.add('play');
-    }
-    function playAudioWithInitPos() {
-        if (audioPosBeforePlay != null){
-            audio.pause()
-            audio.seek(audioPosBeforePlay)
-            audio.play()
-            audioPosBeforePlay = null
-        }
-        else {
-            audio.play();
-        }
-        play_btn.classList.remove('pause');
-        play_btn.classList.add('play');
-    }
-    // set audio volume
-    function addVolBarHandler() {
-        vol_bar.addEventListener("click", e => {
-            const slider_width = window.getComputedStyle(vol_bar).width;
-            const new_vol = e.offsetX/parseInt(slider_width);
-            localStorage.setItem('volume', new_vol.toString())
-
-            if (audio != null){
-                audio.volume(new_vol);
-            }
-            audioPLayer.querySelector(".vol-bar-current").style.width = (new_vol * 100)+'%';
-        })
-    }
-    // fast foreward and rewind
-    function addReWindForwardBtnHandler(rwBtn, fwBtn, audio){
-        fwBtn.addEventListener("click", ()=>{
-            if (audio != null) {
-                audio.seek(audio.seek()+5);
-            }
-        })
-
-        rwBtn.addEventListener("click", ()=>{
-            if (audio != null){
-                audio.seek(audio.seek()-5);
-            }
-        })
-    }
-
-    function addAudioEndHandler (audio) {
-        audio.on('end', function() {
-            play_btn.classList.remove('play');
-            play_btn.classList.add('pause');
-            audio.unload();
-        });
-    }
-
-    function addPlayStopButtonHandler() {
-        /* play/pause */
-        play_btn.addEventListener("click",()=>{
-            if (!audio.playing()) {
-                play_btn.classList.remove('pause');
-                play_btn.classList.add('play');
-                audio.play();
-            }
-            else {
-                play_btn.classList.remove('play');
-                play_btn.classList.add('pause');
-                audio.pause();
-            }
-        },false);
-    }
-
-    function loadVolumeLevel(audio) {
-        const vol = localStorage.getItem("volume")
-        if (vol != null) {
-            audioPLayer.querySelector(".vol-bar-current").style.width = (vol * 100)+'%';
-            if(audio!= null){
-                audio.volume(vol)
-            }
-        }
-        else {
-            if(audio!= null){
-                audio.volume(0.5)
-            }
-            audioPLayer.querySelector(".vol-bar-current").style.width = (0.5 * 100)+'%';
-        }
-    }
-
-    function attachVolumeLevel(audio, vol_level) {
-        audio.volume(parseFloat(vol_level))
-    }
-
-    function addPlaybarHandler(){
-        play_bar.addEventListener("mousedown", e => {
-            if (!is_loaded){
-                audio = new Howl({
-                    src: [hostname + epPath],
-                    html5: true,
-                    preload: true,
-                    loop: false,
-                    onload: function () {
-                        audioPosBeforePlay = new_pos * audio.duration();
-                    }
-                });
-                is_loaded = true;
-            }
-
-            const slider_width = window.getComputedStyle(play_bar).width;
-            const new_pos = e.offsetX/parseInt(slider_width);
-            if (is_loaded){
-                audioPosBeforePlay = new_pos * audio.duration();
-            }
-            audio.load()
-            audio.seek(new_pos * audio.duration());
-            current_play_bar.style.width = (new_pos * 100)+'%';
-        })
-    }
-
-    function addUpdateTimePlayBar(audio){
-        setInterval(() => {
-            if (audio){
-                current_play_bar.style.width = audio.seek() / audio.duration() * 100 + "%";
-                time_pass.innerHTML = getTimeFromNum(audio.seek());
-                time_left.innerHTML = getTimeFromNum(audio.duration()-audio.seek());
-            }
-        }, 250);
-    }
-
-    function addAutoPlayBtnHandler(){
-        // autoplay
-        auto_play_btn.addEventListener("click", e =>{
-            if(auto_play_btn.classList.contains('on')){
-                auto_play_btn.classList.remove('on');
-                auto_play_btn.classList.add('off');
-                auto_play_btn_thumb.classList.remove('on');
-                auto_play_btn_thumb.classList.add('off');
-                localStorage.setItem("auto-play", "false");
-            }
-            else {
-                auto_play_btn.classList.remove('off');
-                auto_play_btn.classList.add('on');
-                auto_play_btn_thumb.classList.remove('off');
-                auto_play_btn_thumb.classList.add('on');
-                localStorage.setItem("auto-play", "true");
-            }
-        })
-    }
-
-    function loadAutoPlaySetting(){
-        let autoplay = localStorage.getItem("auto-play");
-        if (autoplay === "true") {
-            auto_play_btn.classList.remove('off');
-            auto_play_btn.classList.add('on');
-            auto_play_btn_thumb.classList.remove('off');
-            auto_play_btn_thumb.classList.add('on');
-        }
-    }
-/*   Add Auto play handler after s second    */
-    function addAutoPlayHandler(audio, second) {
-        audio.on('end', () => {
-            if (nextEpisodeLink != null){
-                setTimeout(() => {
-                    window.location.href = hostname + nextEpisodeLink
-                }, second*1000)
-            }
-        })
-    }
-
-});
 
 function getTimeFromNum(num_of_second){
     let minute = parseInt(num_of_second/60);
@@ -280,14 +54,13 @@ function getTimeFromNum(num_of_second){
     return minute + ':' + second;
 }
 
-
 /****************************  Carousel ******************************/
 /*mobile view*/
 function adjustCarouselTopPosition(){
     const player_view = document.querySelector(".banner")
     const descriptionHeight= document.querySelector(".ep-description-mb")
     if (window.matchMedia("(max-width: 767px)").matches){
-        player_view.style.paddingBottom=descriptionHeight.offsetHeight +"px"
+        player_view.style.paddingBottom=descriptionHeight.offsetHeight -210 +"px"
     }
 }
 /*end mobile view*/
@@ -343,15 +116,14 @@ let html_ep_slide = (imgSrc, title, description, id, episode_link) => {
 					<img class="img-fluid img-responsive img-rounded ava-img" src=${imgSrc}>
 					<h3 class="item-title">${title}</h3>
 					<p class="item-description">${description}</p>
-                    ${(id !=current_play_id)? `<img src=${hostname+ "/images/podcast/icon/play.svg"} alt="" class="carousel-play-bt p-0 collapse show">`:'' }
+					${(id !=current_play_id)? `<img src=${hostname+ "/images/podcast/icon/play.svg"} alt="" class="carousel-play-bt p-0 collapse show">`:'' }
                     ${id == current_play_id?  html_playing:''}
 			</a>`
 }
 
 const queryRelatedPodcasts = (current_play_id) => {
-    let minId = current_play_id-3;
-    let maxId = current_play_id+5;
-    // console.log(minId + "   " + maxId)
+    let minId = current_play_id-8;
+    let maxId = current_play_id-2;
     let relatedPodcasts = new XMLHttpRequest();
     relatedPodcasts.open('GET', `/podcasts/search/findByIdBetween?minId=${minId}&maxId=${maxId}`)
     relatedPodcasts.setRequestHeader('Content-Type', 'application/json');
@@ -364,8 +136,13 @@ const queryRelatedPodcasts = (current_play_id) => {
                 /* for mobile views*/
                 if (window.matchMedia("(max-width:767px)").matches) {
                     const ep_items = document.querySelector(".ep-items")
+
                     podcastList.forEach((podcast) => {
-                        ep_items.insertAdjacentHTML('beforeend',html_ep_slide(podcast.coverImgPath,podcast.title, podcast.description, podcast.id,hostname + podcast.page))
+                        {
+                            if (podcast.id != currentPodcast.id){
+                                ep_items.insertAdjacentHTML('beforeend', html_ep_slide(podcast.coverImgPath, podcast.title, podcast.description, podcast.id, hostname + podcast.page))
+                            }
+                        }
                     })
                     /* moving scroll to current playing episode*/
                     const item = document.querySelector(".ep-items .item")
@@ -374,11 +151,14 @@ const queryRelatedPodcasts = (current_play_id) => {
                 }
 
                 podcastList.forEach((podcast) => {
-                    glideTrack.insertAdjacentHTML('beforeend', html_glide(podcast.id, podcast.coverImgPath, podcast.title, podcast.description, current_play_id, hostname + podcast.page ));
+                    if (podcast.id !=currentPodcast.id){
+                        glideTrack.insertAdjacentHTML('beforeend', html_glide(podcast.id, podcast.coverImgPath, podcast.title, podcast.description, current_play_id, hostname + podcast.page ));
+                    }
+
                 })
                 glideTrack.insertAdjacentHTML('beforeend', loadmore_glide());
                 glide.update({
-                    startAt: current_play_id - response._embedded.podcasts[0].id + 1
+                    startAt: 0
                 });
 
                 const loadmore_event = document.querySelector(".loadmore-glide");
@@ -608,8 +388,5 @@ function topScrollHandler(){
     })
 }
 
-/* Autoplay handler */
-function autoRedirect() {
-    const newUrl = document
-}
+
 

@@ -1,14 +1,11 @@
 package com.resteel.podcast_web_app.Controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.resteel.podcast_web_app.Service.PodcastService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,6 +14,8 @@ public class PodcastController {
 
     @GetMapping("/")
     public String index(Model model){
+        model.addAttribute("lastestPodcast", podcastService.findLastestPodcast());
+        System.out.println(podcastService.findLastestPodcast());
         return "index";
     }
 
@@ -26,7 +25,7 @@ public class PodcastController {
         model.addAttribute("epDirectory", podcastService.findDirectoryBySlug(slug));
         model.addAttribute("nextEpisodeLink", podcastService.findNextEpisode(slug));
         model.addAttribute("currentPodcast", podcastService.findPodcastBySlug(slug));
-        return "index";
+        return "episode";
     }
 
 }

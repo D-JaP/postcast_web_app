@@ -1,6 +1,7 @@
 package com.resteel.podcast_web_app.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,12 +22,13 @@ public class Tag {
     @Column(name = "tag_name")
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "podcast_tag",
             joinColumns = @JoinColumn(name = "tag_id"),
             inverseJoinColumns = @JoinColumn(name = "podcast_id")
     )
+    @JsonBackReference
     private List<Podcast> podcasts;
 
     public void addPodcast(Podcast podcast){
