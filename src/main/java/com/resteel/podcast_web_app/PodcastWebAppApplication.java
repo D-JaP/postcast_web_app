@@ -2,10 +2,11 @@ package com.resteel.podcast_web_app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 
 @SpringBootApplication
-public class PodcastWebAppApplication {
+public class PodcastWebAppApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(PodcastWebAppApplication.class, args);
 	}

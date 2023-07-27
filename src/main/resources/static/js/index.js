@@ -1,6 +1,6 @@
 /* Thymeleaf variable*/
 // const hostname = window.location.hostname;
-const hostname = "http://localhost:8080"
+const hostname = ""
 const epPath = epDirectory;
 currentPodcast = JSON.parse(lastestPodcast)
 /*--------------------------------------------------------------------------------------------------------------------*/

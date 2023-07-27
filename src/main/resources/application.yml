@@ -5,6 +5,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/podcast
+    url: jdbc:postgresql://resteel-db.cninkrw4bfog.ap-southeast-4.rds.amazonaws.com:5432/podcast
     username: postgres
-    password: root
+    password: resteelmonty
+#    url: jdbc:postgresql://localhost:5432/podcast
+#    username: postgres
+#    password: root
