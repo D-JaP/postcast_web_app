@@ -17,6 +17,7 @@ public class Podcast {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "created_at")
@@ -55,7 +56,6 @@ public class Podcast {
             joinColumns = @JoinColumn(name = "podcast_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    @JsonManagedReference
     private List<Tag> tags;
 
     public void addTag(Tag tag){

@@ -8,3 +8,12 @@ spring:
     url: jdbc:postgresql://localhost:5432/podcast
     username: postgres
     password: root
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+upload:
+  dir: classpath:static/episodes
+
+

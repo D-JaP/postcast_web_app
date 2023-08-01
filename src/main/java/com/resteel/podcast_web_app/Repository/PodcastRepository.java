@@ -1,7 +1,6 @@
 package com.resteel.podcast_web_app.Repository;
 
 import com.resteel.podcast_web_app.Model.Podcast;
-import com.resteel.podcast_web_app.Model.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +11,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.List;
 import java.util.Optional;
 
-@RepositoryRestResource
+@RepositoryRestResource()
 public interface PodcastRepository extends JpaRepository<Podcast, Long> {
 
     Optional<Podcast> findById(long id);
@@ -33,4 +32,7 @@ public interface PodcastRepository extends JpaRepository<Podcast, Long> {
 
     @Query(value = "SELECT * from Podcast p order by p.id desc limit 1", nativeQuery = true)
     Podcast findLastestPodcast();
+
+    @Query(value = "SELECT p from Podcast p order by p.id asc")
+    Page<Podcast> findAll(Pageable pageable);
 }

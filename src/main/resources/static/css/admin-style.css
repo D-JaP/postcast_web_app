@@ -5,7 +5,9 @@ h1, h2, h3, h4, h5, h6{margin:0; padding:0}
 body a{-webkit-transition:0.5s all;-moz-transition:0.5s all;-o-transition:0.5s all;transition:0.5s all;}
 .cl{clear:both;}
 .dropdown:hover .dropdown-menu { display: block; margin-top: 0; } 
-
+.maxwidth-60{
+    max-width: 100%;
+}
 
 
 .side-bar-list  {
@@ -50,4 +52,27 @@ body a{-webkit-transition:0.5s all;-moz-transition:0.5s all;-o-transition:0.5s a
     right: 0;
     bottom: 0;
     left: 0;
+}
+
+.pagination ul {
+    display: flex;
+
+
+}
+
+.pagination ul > li {
+    text-decoration: none;
+    list-style: none;
+    padding: 10px
+}
+.pagination ul li > a {
+    text-decoration: none;
+}
+
+.action {
+}
+
+.action .btn {
+    margin:5px;
+
 }
