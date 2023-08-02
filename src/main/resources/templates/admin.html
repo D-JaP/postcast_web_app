@@ -17,16 +17,16 @@
     
     <div class="container-fluid">
         <div class="nav-bar d-flex justify-content-between bg-primary">
-            <img src="" alt="Resteel logo">
+            <img src="" alt="Rexteel logo">
             <div class="admin-menu">
                 <div class="dropdown">
                     <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
-                      Username
+                      Admin
                     </button>
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="#">User info</a></li>
                       <li><a class="dropdown-item" href="#">Account setting</a></li>
-                      <li><a class="dropdown-item" href="#">Sign out</a></li>
+                      <li><a class="dropdown-item" href="/logout">Sign out</a></li>
                     </ul>
                 </div>
             </div>
@@ -57,7 +57,7 @@
                 <h1>Podcast management</h1>
                 <div class="add-podcast background-white rounded p-2">
                     <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#pc-action">Add new</button>
-                    <form action="/podcasts" method="post" id="pc-action" class="collapse" enctype="multipart/form-data" >
+                    <form id="pc-action" class="collapse" enctype="multipart/form-data" >
                         <div class="row p-2">
                             <div class="col-3 d-flex align-items-center" >
                                 <label for="title">Title</label>
@@ -71,7 +71,7 @@
                                 <label for="authors" class=>Author</label>
                             </div>
                             <div class="col">
-                                <input type="text" id="authors" placeholder="Enter podcast author" name="authors" class="pc-ad-n form-control">
+                                <input type="text" id="authors" placeholder="Enter podcast author" name="authors" class="pc-ad-n form-control" >
                             </div>
                         </div>
                         <div class="row p-2">
@@ -79,14 +79,24 @@
                                 <label for="description">Description</label>
                             </div>
                             <div class="col">
-                                <textarea class="form-control pc-ad-n" rows="6" id="description" name="description" placeholder="Enter brief description"></textarea>
+                                <textarea class="form-control pc-ad-n" rows="6" id="description" name="description" placeholder="Enter brief description" ></textarea>
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3">
+                                <label for="coverImg">Cover Image</label>
+                            </div>
+                            <div class="col">
+                                <input type="file" accept="image/*" id="coverImg" name="coverImg" class="pc-ad-n" >
                             </div>
                         </div>
 
                         <div class="row p-2">
-                            <div class="col-3"></div>
+                            <div class="col-3">
+                                <label for="myFile">Audio Input</label>
+                            </div>
                             <div class="col">
-                                <input type="file" accept=".mp3,audio/*" id="myFile" name="filename" class="pc-ad-n">
+                                <input type="file" accept=".mp3,audio/*" id="myFile" name="filename" class="pc-ad-n" >
                                 <div class="text-primary">
                                     *Note: input file must be mp3 or other audio type
                                 </div>
@@ -97,10 +107,9 @@
                             <div class="col-3"></div>
                             <div class="col">
                                 <div class="pc-ad-n"></div>
-                                <input type="submit" class="btn btn-success submit-btn" value="Submit"></input>
+                                <input type="submit" class="btn btn-success submit-btn" value="Submit" onclick="submitFormData(event)"></input>
                             </div>
                         </div>
-
                     </form>
 
 

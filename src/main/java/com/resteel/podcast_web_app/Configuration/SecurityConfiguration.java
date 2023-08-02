@@ -2,6 +2,7 @@ package com.resteel.podcast_web_app.Configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -17,27 +18,24 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/*"
-                            ,"/css/**",
-                        "/episode/**",
-                        "/images/**",
-                        "/js/**",
-                        "/src/**",
-                        "/podcasts/**",
-                        "/tags/**",
-
-                        "/episodes/*"
-                    )
-                    .permitAll()
-                    .anyRequest().authenticated()
+                .antMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers(HttpMethod.GET).permitAll()
+                .antMatchers(HttpMethod.DELETE,"/podcasts").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST,"/podcasts").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PATCH,"/podcasts").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT,"/podcasts").hasRole("ADMIN")
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginProcessingUrl("/login")
-                .successForwardUrl("/admin")
+                .defaultSuccessUrl("/admin")
                 .permitAll()
                 .and()
                 .logout()
-                .permitAll();
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID");
 
         return http.build();
     }

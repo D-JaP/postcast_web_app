@@ -67,14 +67,17 @@ public class PodcastService {
     }
 
 
-    public String addPodcast(String title, String authors, String description, MultipartFile mp3File){
+    public String addPodcast(String title, String authors, String description, MultipartFile mp3File, MultipartFile coverImg){
         Podcast newPodcast = new Podcast();
         newPodcast.setAuthors(authors);
         newPodcast.setTitle(title);
         newPodcast.setDescription(description);
         newPodcast.setSlug(utils.toSlug(title));
         newPodcast.setPath("/podcast/" + utils.toSlug(title) +".mp3");
-        newPodcast.setPage("/episode/"+ utils.toSlug(title));
+        newPodcast.setPage("/episode/"+ utils.toSlug(title) + ".png");
+
+        String[] imgName = coverImg.getOriginalFilename().split("\\.");
+        newPodcast.setCoverImgPath("/images/podcast/" + utils.toSlug(title)+"." + imgName[imgName.length-1]);
         try {
             podcastRepository.save(newPodcast);
             return "Success";

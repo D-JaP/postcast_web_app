@@ -265,18 +265,32 @@ function deleteBtnHandler(){
 }
 
 
-// add podcast handler
-// const submitBtn = document.querySelector(".submit-btn")
-// submitBtn.addEventListener("click", () => {
-//     const form = document.querySelector("#pc-action")
-//     const fileInput = document.querySelector("#myFile")
-//     const file = fileInput[0]
-//     console.log(file)
-//     const formData = new FormData();
-//     formData.append('mp3File', file)
-//     formData.append('title', form.querySelector("#title").textContent)
-//     formData.append('description', form.querySelector("#authors").textContent)
-//     formData.append('slug', convertToSlug(form.querySelector("#title").textContent))
-// })
+function submitFormData(event){
+    event.preventDefault()
+    let form = document.querySelector("#pc-action")
+    let submitter = document.querySelector(".submit-btn")
+    let formData = new FormData(form,submitter)
+    let requestOption= {
+        method: "POST",
+        headers: {
 
+            'Authorization' : 'Bearer ' + getCookie('JSESSIONID')
+        },
+        body: formData
+    }
+    fetch("/podcasts", requestOption)
+        .then((res) => {
+            if (!res.ok){
+                throw new Error("Network error");
+            }
+            else {
+                return res.text;
+            }
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    toast.show(); // Show the toast component
+    bg.classList.toggle('show');
+}
 

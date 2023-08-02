@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,5 +64,12 @@ public class Podcast {
             tags = new ArrayList<Tag>();
         }
         tags.add(tag);
+    }
+
+
+    @PrePersist
+    protected void onCreate(){
+        long currentInstance = Instant.now().getEpochSecond();
+        createdTime = currentInstance;
     }
 }
